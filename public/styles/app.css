@@ -474,6 +474,14 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-bg-opacity: 1;
   background-color: rgb(169 180 198 / var(--tw-bg-opacity));
 }
+.bg-pink-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(236 72 153 / var(--tw-bg-opacity));
+}
+.bg-cyan-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(6 182 212 / var(--tw-bg-opacity));
+}
 .text-sm {
   font-size: 0.875rem;
   line-height: 1.25rem;
@@ -492,17 +500,17 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-text-opacity: 1;
   color: rgb(236 72 153 / var(--tw-text-opacity));
 }
-.text-white {
+.text-gray-300 {
   --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity));
+  color: rgb(206 212 222 / var(--tw-text-opacity));
 }
 .text-black-500 {
   --tw-text-opacity: 1;
   color: rgb(41 45 61 / var(--tw-text-opacity));
 }
-.text-gray-300 {
+.text-white {
   --tw-text-opacity: 1;
-  color: rgb(206 212 222 / var(--tw-text-opacity));
+  color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 .shadow-solid-black {
   --tw-shadow: 0px 8px 0px 0px rgba(8, 9, 12);
@@ -513,4 +521,7 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-shadow: 0px 4px 0px 0px rgba(133, 148, 173);
   --tw-shadow-colored: 0px 4px 0px 0px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.filter {
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
