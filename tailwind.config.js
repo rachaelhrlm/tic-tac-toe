@@ -4,7 +4,7 @@ module.exports = {
     extend: {
       boxShadow: {
         "solid-black": "0px 8px 0px 0px rgba(8, 9, 12)",
-        "solid-gray": "0px 4px 0px 0px rgba(169, 180, 198)",
+        "solid-gray": "0px 4px 0px 0px rgba(133, 148, 173)",
       },
 
       colors: {
@@ -16,6 +16,7 @@ module.exports = {
         gray: {
           300: "#CED4DE",
           400: "#A9B4C6",
+          500: "#8594ad",
         },
       },
     },

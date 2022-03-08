@@ -100,10 +100,14 @@ const App = () => {
     <div className="bg-black-600 h-screen w-screen">
       <div className="w-full h-full grid place-items-center">
         <div className="grid grid-cols-3 gap-6">
-          <div>Icons</div>
-          <div>Turn</div>
+          <div className="flex">
+            <BiX className="text-cyan-500" viewBox="0 0 20 20" size={40} strokeWidth={2} /> <BiRadioCircle viewBox="0 0 20 20" className="text-pink-500" size={40} strokeWidth={2} />
+          </div>
+          <div className="flex gap-1 justify-center place-items-center bg-black-500 shadow-solid-black rounded-xl w-32 uppercase text-gray-300 text-sm font-semibold">
+            <BiX size={30} strokeWidth={2} /> Turn
+          </div>
           <button className="flex justify-end" onClick={() => clearBoard()}>
-            <BiRefresh className="cursor-pointer bg-gray-300 rounded-md shadow-solid-gray text-black-500" size={40} />
+            <BiRefresh className="cursor-pointer bg-gray-400 rounded-lg shadow-solid-gray text-black-500" size={40} />
           </button>
           {board.map((row, indexX) => {
             return row.map((col, indexY) => (
@@ -111,9 +115,9 @@ const App = () => {
                 onClick={() => {
                   if (!winner) userMove(indexX, indexY);
                 }}
-                className="grid place-items-center bg-black-500 shadow-solid-black rounded-md h-24 w-24 cursor-pointer text-white"
+                className="grid place-items-center bg-black-500 shadow-solid-black rounded-xl h-32 w-32 cursor-pointer text-white"
               >
-                {col === 1 ? <BiX key={`${indexX}-${indexY}`} className="text-cyan-500" size={70} strokeWidth={2} /> : col === 2 ? <BiRadioCircle className="text-pink-500" size={70} strokeWidth={2} /> : ""}
+                {col === 1 ? <BiX key={`${indexX}-${indexY}`} className="text-cyan-500" size={100} strokeWidth={2} /> : col === 2 ? <BiRadioCircle className="text-pink-500" size={100} strokeWidth={2} /> : ""}
               </div>
             ));
           })}

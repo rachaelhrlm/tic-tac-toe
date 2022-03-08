@@ -420,20 +420,20 @@ Ensure the default browser behavior of the `hidden` attribute.
 .h-screen {
   height: 100vh;
 }
-.h-24 {
-  height: 6rem;
-}
 .h-full {
   height: 100%;
+}
+.h-32 {
+  height: 8rem;
+}
+.w-screen {
+  width: 100vw;
 }
 .w-full {
   width: 100%;
 }
-.w-24 {
-  width: 6rem;
-}
-.w-screen {
-  width: 100vw;
+.w-32 {
+  width: 8rem;
 }
 .cursor-pointer {
   cursor: pointer;
@@ -447,30 +447,42 @@ Ensure the default browser behavior of the `hidden` attribute.
 .justify-end {
   justify-content: flex-end;
 }
+.justify-center {
+  justify-content: center;
+}
 .gap-6 {
   gap: 1.5rem;
 }
-.rounded-md {
-  border-radius: 0.375rem;
+.gap-1 {
+  gap: 0.25rem;
+}
+.rounded-xl {
+  border-radius: 0.75rem;
+}
+.rounded-lg {
+  border-radius: 0.5rem;
 }
 .bg-black-600 {
   --tw-bg-opacity: 1;
   background-color: rgb(25 27 36 / var(--tw-bg-opacity));
 }
-.bg-gray-300 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(206 212 222 / var(--tw-bg-opacity));
-}
 .bg-black-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(41 45 61 / var(--tw-bg-opacity));
 }
-.p-1 {
-  padding: 0.25rem;
+.bg-gray-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(169 180 198 / var(--tw-bg-opacity));
 }
-.text-white {
-  --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity));
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+.font-semibold {
+  font-weight: 600;
+}
+.uppercase {
+  text-transform: uppercase;
 }
 .text-cyan-500 {
   --tw-text-opacity: 1;
@@ -480,17 +492,25 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-text-opacity: 1;
   color: rgb(236 72 153 / var(--tw-text-opacity));
 }
+.text-white {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
 .text-black-500 {
   --tw-text-opacity: 1;
   color: rgb(41 45 61 / var(--tw-text-opacity));
 }
-.shadow-solid-gray {
-  --tw-shadow: 0px 4px 0px 0px rgba(169, 180, 198);
-  --tw-shadow-colored: 0px 4px 0px 0px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+.text-gray-300 {
+  --tw-text-opacity: 1;
+  color: rgb(206 212 222 / var(--tw-text-opacity));
 }
 .shadow-solid-black {
   --tw-shadow: 0px 8px 0px 0px rgba(8, 9, 12);
   --tw-shadow-colored: 0px 8px 0px 0px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-solid-gray {
+  --tw-shadow: 0px 4px 0px 0px rgba(133, 148, 173);
+  --tw-shadow-colored: 0px 4px 0px 0px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
