@@ -12,6 +12,11 @@ const App = () => {
     ]);
     const [winningMove, setWinningMove] = useState<Move>();
     const [winner, setWinner] = useState<number>();
+    const [scoreBoard, setScoreBoard] = useState<{
+        0: number;
+        1: number;
+        2: number;
+    }>({ 0: 0, 1: 0, 2: 0 });
 
     const userMove = (indexX: number, indexY: number) => {
         const newBoard = [...board];
@@ -19,7 +24,7 @@ const App = () => {
             newBoard[indexX][indexY] = 1;
             setBoard(newBoard);
             checkMoves();
-            computerMove();
+            if (!winner) computerMove();
         }
     };
 
@@ -31,7 +36,10 @@ const App = () => {
             newBoard[indexX][indexY] = 2;
         } else if (newBoard.some((row) => row.some((col) => col === 0))) {
             computerMove();
-        } else setWinner(0);
+        } else {
+            setWinner(0);
+            setScoreBoard({ ...scoreBoard, 0: scoreBoard[0] + 1 });
+        }
         setBoard(newBoard);
         checkMoves();
     };
@@ -84,10 +92,12 @@ const App = () => {
             if (move.every((num) => board[num[0]][num[1]] === 1)) {
                 setWinningMove(move);
                 setWinner(1);
+                setScoreBoard({ ...scoreBoard, 1: scoreBoard[1] + 1 });
             }
             if (move.every((num) => board[num[0]][num[1]] === 2)) {
                 setWinningMove(move);
                 setWinner(2);
+                setScoreBoard({ ...scoreBoard, 2: scoreBoard[2] + 1 });
             }
         });
     };
@@ -99,6 +109,7 @@ const App = () => {
             [0, 0, 0],
         ];
         setWinner(undefined);
+        setWinningMove(undefined);
         setBoard(newBoard);
     };
 
@@ -152,6 +163,23 @@ const App = () => {
                             );
                         });
                     })}
+                    <div
+                        className={classNames('grid place-items-center bg-cyan-500 rounded-lg shadow-solid-cyan cursor-pointer text-black-500')}>
+                        <p>X</p>
+                        <p>{scoreBoard[1]}</p>
+                    </div>
+                    <div
+                        className={classNames(
+                            'grid place-items-center bg-gray-400 rounded-lg shadow-solid-gray  cursor-pointer text-black-500',
+                        )}>
+                        <p>Tie</p>
+                        <p>{scoreBoard[0]}</p>
+                    </div>
+                    <div
+                        className={classNames('grid place-items-center bg-pink-500 rounded-lg shadow-solid-pink cursor-pointer text-black-500')}>
+                        <p>O</p>
+                        <p>{scoreBoard[2]}</p>
+                    </div>
                 </div>
             </div>
             {winner}
