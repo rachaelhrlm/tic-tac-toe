@@ -129,7 +129,10 @@ const App = () => {
                         <BiX size={30} strokeWidth={2} /> Turn
                     </div>
                     <button className="flex justify-end" onClick={() => clearBoard()}>
-                        <BiRefresh className="cursor-pointer bg-gray-400 rounded-lg shadow-solid-gray text-black-500" size={40} />
+                        <BiRefresh
+                            className="cursor-pointer bg-gray-400 rounded-lg shadow-solid-gray text-black-500  hover:scale-110 transition-all"
+                            size={40}
+                        />
                     </button>
                     {board.map((row, indexX) => {
                         return row.map((col, indexY) => {
@@ -144,7 +147,7 @@ const App = () => {
                                         if (!winner) userMove(indexX, indexY);
                                     }}
                                     className={classNames(
-                                        'grid place-items-center bg-black-500 shadow-solid-black rounded-xl h-32 w-32 cursor-pointer text-white',
+                                        'grid place-items-center bg-black-500 shadow-solid-black rounded-xl h-32 w-32 cursor-pointer text-white hover:scale-110 transition-all',
                                         { 'bg-cyan-500 shadow-solid-cyan': isXWinner },
                                         { 'bg-pink-500 shadow-solid-pink': isOWinner },
                                     )}>
