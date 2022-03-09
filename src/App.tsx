@@ -141,8 +141,8 @@ const App = () => {
                                     }}
                                     className={classNames(
                                         'grid place-items-center bg-black-500 shadow-solid-black rounded-xl h-32 w-32 cursor-pointer text-white',
-                                        { 'bg-cyan-500 ': isXWinner },
-                                        { 'bg-pink-500 ': isOWinner },
+                                        { 'bg-cyan-500 shadow-solid-cyan': isXWinner },
+                                        { 'bg-pink-500 shadow-solid-pink': isOWinner },
                                     )}>
                                     {col === 1 ? (
                                         <BiX
