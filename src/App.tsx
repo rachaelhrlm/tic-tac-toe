@@ -23,8 +23,8 @@ const App = () => {
         if (newBoard[indexX][indexY] === 0) {
             newBoard[indexX][indexY] = 1;
             setBoard(newBoard);
-            checkMoves();
-            if (!winner) computerMove();
+            const hasWinner = checkMoves();
+            if (!hasWinner) computerMove();
         }
     };
 
@@ -45,6 +45,7 @@ const App = () => {
     };
 
     const checkMoves = () => {
+        let hasWinner = false;
         const winningMoves = [
             [
                 [0, 0],
@@ -93,13 +94,16 @@ const App = () => {
                 setWinningMove(move);
                 setWinner(1);
                 setScoreBoard({ ...scoreBoard, 1: scoreBoard[1] + 1 });
+                hasWinner = true;
             }
             if (move.every((num) => board[num[0]][num[1]] === 2)) {
                 setWinningMove(move);
                 setWinner(2);
                 setScoreBoard({ ...scoreBoard, 2: scoreBoard[2] + 1 });
+                hasWinner = true;
             }
         });
+        return hasWinner;
     };
 
     const clearBoard = () => {
