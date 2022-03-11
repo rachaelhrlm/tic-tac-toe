@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { BiX, BiRadioCircle } from 'react-icons/bi';
 import { MdOutlineRefresh } from 'react-icons/md';
 
-import { Button, ButtonStlye, GameButton, GameValue, RoundResultsModal } from './components';
+import { Button, GameButton, GameValue, RoundResultsModal } from './components';
 
 type Move = number[][];
 
@@ -127,6 +127,7 @@ const App = () => {
             <RoundResultsModal
                 winner={winner}
                 isRoundOver={isRoundOver}
+                onClickQuit={() => setIsRoundOver(false)}
                 onClickNextRound={() => {
                     setIsRoundOver(false);
                     clearBoard();
