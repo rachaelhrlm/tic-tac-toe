@@ -1,6 +1,9 @@
 import classNames from 'classnames';
 import React, { useState } from 'react';
-import { BiX, BiRefresh, BiRadioCircle } from 'react-icons/bi';
+import { BiX, BiRadioCircle } from 'react-icons/bi';
+import { MdOutlineRefresh } from 'react-icons/md';
+
+import { Button, ButtonStlye } from './components';
 
 type Move = number[][];
 
@@ -125,32 +128,45 @@ const App = () => {
                         <BiX className="text-cyan-500" viewBox="0 0 20 20" size={40} strokeWidth={2} />{' '}
                         <BiRadioCircle viewBox="0 0 20 20" className="text-pink-500" size={40} strokeWidth={2} />
                     </div>
-                    <div className="flex gap-1 justify-center place-items-center bg-black-500 shadow-solid-black rounded-xl w-32 uppercase text-gray-300 text-sm font-semibold">
-                        <BiX size={30} strokeWidth={2} /> Turn
+                    <Button styling="tertiary">
+                        <span className="flex place-items-center">
+                            <BiX size={30} strokeWidth={2} /> Turn
+                        </span>
+                    </Button>
+                    <div className="flex justify-end">
+                        <Button onClick={() => clearBoard()} styling="inverse-tertiary">
+                            <MdOutlineRefresh size={40} />
+                        </Button>
                     </div>
-                    <button className="flex justify-end" onClick={() => clearBoard()}>
-                        <BiRefresh
-                            className="cursor-pointer bg-gray-400 rounded-lg shadow-solid-gray text-black-500  hover:scale-110 transition-all"
-                            size={40}
-                        />
-                    </button>
                     {board.map((row, indexX) => {
                         return row.map((col, indexY) => {
                             let isWinningMove = !!winningMove?.map((move) => move.toString()).includes([indexX, indexY].toString());
                             const isXWinner = isWinningMove && winner === 1;
                             const isOWinner = isWinningMove && winner === 2;
 
+                            let buttonStyling: ButtonStlye = 'primary';
+                            if (isXWinner) {
+                                buttonStyling = 'inverse-primary';
+                            } else if (isOWinner) {
+                                buttonStyling = 'inverse-secondary';
+                            } else if (col === 2) {
+                                buttonStyling = 'secondary';
+                            }
+
                             return (
-                                <div
+                                <Button
+                                    extraClasses="h-32 w-32"
                                     key={`${indexX}-${indexY}`}
+                                    styling={buttonStyling}
                                     onClick={() => {
                                         if (!winner) userMove(indexX, indexY);
                                     }}
-                                    className={classNames(
-                                        'grid place-items-center bg-black-500 shadow-solid-black rounded-xl h-32 w-32 cursor-pointer text-white hover:scale-110 transition-all',
-                                        { 'bg-cyan-500 shadow-solid-cyan': isXWinner },
-                                        { 'bg-pink-500 shadow-solid-pink': isOWinner },
-                                    )}>
+                                    //     className={classNames(
+                                    //         'grid place-items-center bg-black-500 shadow-solid-black rounded-xl h-32 w-32 cursor-pointer text-white hover:scale-110 transition-all',
+                                    //         { 'bg-cyan-500 shadow-solid-cyan': isXWinner },
+                                    //         { 'bg-pink-500 shadow-solid-pink': isOWinner },
+                                    // )}
+                                >
                                     {col === 1 ? (
                                         <BiX
                                             className={classNames('text-cyan-500', { ' text-black-500': isWinningMove })}
@@ -166,27 +182,22 @@ const App = () => {
                                     ) : (
                                         ''
                                     )}
-                                </div>
+                                </Button>
                             );
                         });
                     })}
-                    <div
-                        className={classNames('grid place-items-center bg-cyan-500 rounded-lg shadow-solid-cyan cursor-pointer text-black-500')}>
+                    <Button styling="inverse-primary">
                         <p>X</p>
-                        <p>{scoreBoard[1]}</p>
-                    </div>
-                    <div
-                        className={classNames(
-                            'grid place-items-center bg-gray-400 rounded-lg shadow-solid-gray  cursor-pointer text-black-500',
-                        )}>
-                        <p>Tie</p>
-                        <p>{scoreBoard[0]}</p>
-                    </div>
-                    <div
-                        className={classNames('grid place-items-center bg-pink-500 rounded-lg shadow-solid-pink cursor-pointer text-black-500')}>
+                        <p className="text-xl">{scoreBoard[1]}</p>
+                    </Button>
+                    <Button styling="inverse-tertiary">
+                        <p>Ties</p>
+                        <p className="text-xl">{scoreBoard[0]}</p>
+                    </Button>
+                    <Button styling="inverse-secondary">
                         <p>O</p>
-                        <p>{scoreBoard[2]}</p>
-                    </div>
+                        <p className="text-xl">{scoreBoard[2]}</p>
+                    </Button>
                 </div>
             </div>
             {winner}
