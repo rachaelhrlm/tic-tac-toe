@@ -4,11 +4,12 @@ import { BiX, BiRadioCircle } from 'react-icons/bi';
 import { MdOutlineRefresh } from 'react-icons/md';
 
 import { Button, ButtonStlye } from './components';
+import { GameButton, GameValue } from './components/gameButton';
 
 type Move = number[][];
 
 const App = () => {
-    const [board, setBoard] = useState<number[][]>([
+    const [board, setBoard] = useState<GameValue[][]>([
         [0, 0, 0],
         [0, 0, 0],
         [0, 0, 0],
@@ -110,7 +111,7 @@ const App = () => {
     };
 
     const clearBoard = () => {
-        const newBoard = [
+        const newBoard: GameValue[][] = [
             [0, 0, 0],
             [0, 0, 0],
             [0, 0, 0],
@@ -139,52 +140,15 @@ const App = () => {
                         </Button>
                     </div>
                     {board.map((row, indexX) => {
-                        return row.map((col, indexY) => {
-                            let isWinningMove = !!winningMove?.map((move) => move.toString()).includes([indexX, indexY].toString());
-                            const isXWinner = isWinningMove && winner === 1;
-                            const isOWinner = isWinningMove && winner === 2;
-
-                            let buttonStyling: ButtonStlye = 'primary';
-                            if (isXWinner) {
-                                buttonStyling = 'inverse-primary';
-                            } else if (isOWinner) {
-                                buttonStyling = 'inverse-secondary';
-                            } else if (col === 2) {
-                                buttonStyling = 'secondary';
-                            }
-
-                            return (
-                                <Button
-                                    extraClasses="h-32 w-32"
-                                    key={`${indexX}-${indexY}`}
-                                    styling={buttonStyling}
-                                    onClick={() => {
-                                        if (!winner) userMove(indexX, indexY);
-                                    }}
-                                    //     className={classNames(
-                                    //         'grid place-items-center bg-black-500 shadow-solid-black rounded-xl h-32 w-32 cursor-pointer text-white hover:scale-110 transition-all',
-                                    //         { 'bg-cyan-500 shadow-solid-cyan': isXWinner },
-                                    //         { 'bg-pink-500 shadow-solid-pink': isOWinner },
-                                    // )}
-                                >
-                                    {col === 1 ? (
-                                        <BiX
-                                            className={classNames('text-cyan-500', { ' text-black-500': isWinningMove })}
-                                            size={100}
-                                            strokeWidth={2}
-                                        />
-                                    ) : col === 2 ? (
-                                        <BiRadioCircle
-                                            className={classNames('text-pink-500', { ' text-black-500': isWinningMove })}
-                                            size={100}
-                                            strokeWidth={2}
-                                        />
-                                    ) : (
-                                        ''
-                                    )}
-                                </Button>
-                            );
-                        });
+                        return row.map((col, indexY) => (
+                            <GameButton
+                                isInWinningMove={!!winningMove?.map((move) => move.toString()).includes([indexX, indexY].toString())}
+                                onClick={() => {
+                                    if (!winner) userMove(indexX, indexY);
+                                }}
+                                value={col}
+                            />
+                        ));
                     })}
                     <Button styling="inverse-primary">
                         <p>X</p>
