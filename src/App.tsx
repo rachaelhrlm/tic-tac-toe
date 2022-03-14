@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BiX, BiRadioCircle } from 'react-icons/bi';
 import { MdOutlineRefresh } from 'react-icons/md';
 
@@ -49,6 +49,11 @@ const App = () => {
         setBoard(newBoard);
         checkMoves();
     };
+
+    useEffect(() => {
+        if (playerMark === 2 && !!gameMode && winner === undefined && board.every((row) => row.every((col) => col === 0))) computerMove();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [gameMode, playerMark, winner, board]);
 
     const checkMoves = () => {
         let hasWinner = false;
@@ -110,6 +115,12 @@ const App = () => {
                 hasWinner = true;
             }
         });
+        if (!hasWinner && !board.some((row) => row.some((col) => col === 0))) {
+            setWinner(0);
+            setScoreBoard({ ...scoreBoard, 0: scoreBoard[0] + 1 });
+
+            hasWinner = true;
+        }
         if (hasWinner) setIsRoundOver(true);
         return hasWinner;
     };
