@@ -8,10 +8,17 @@ export interface RoundResultsModalProps {
     isRoundOver?: boolean;
     onClickNextRound: () => void;
     onClickQuit: () => void;
+    playerMark: GameValue;
     winner?: GameValue;
 }
 
-export const RoundResultsModal: FunctionComponent<RoundResultsModalProps> = ({ isRoundOver, onClickNextRound, onClickQuit, winner }) => {
+export const RoundResultsModal: FunctionComponent<RoundResultsModalProps> = ({
+    isRoundOver,
+    onClickNextRound,
+    onClickQuit,
+    playerMark,
+    winner,
+}) => {
     let roundResults = <p className="text-gray-400 flex justify-center p-10">It's a tie</p>;
     if (winner === 1) {
         roundResults = (
@@ -55,7 +62,9 @@ export const RoundResultsModal: FunctionComponent<RoundResultsModalProps> = ({ i
                             block: isRoundOver,
                         },
                     )}>
-                    <div className="text-center text-gray-400 text-lg">{winner === 1 ? 'You' : winner === 2 ? 'Computer' : 'No one'} won!</div>
+                    <div className="text-center text-gray-400 text-lg">
+                        {winner === playerMark ? 'You' : winner !== playerMark && winner !== 0 ? 'Computer' : 'No one'} won!
+                    </div>
                     <span className="gap-2 text-6xl">{roundResults}</span>
                     <span className="flex gap-4 justify-center pb-2">
                         <Button extraClasses="p-4 text-lg" onClick={onClickQuit} styling="inverse-tertiary">

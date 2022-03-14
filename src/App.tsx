@@ -1,14 +1,10 @@
-import classNames from 'classnames';
 import React, { useState } from 'react';
 import { BiX, BiRadioCircle } from 'react-icons/bi';
 import { MdOutlineRefresh } from 'react-icons/md';
 
-import { Button, GameButton, GameValue, RoundResultsModal } from './components';
+import { Button, GameButton, GameMode, GameSetup, GameValue, RoundResultsModal } from './components';
 
 type Move = number[][];
-enum GameMode {
-    CPU_EASY = 'CPU_EASY',
-}
 
 const App = () => {
     const [board, setBoard] = useState<GameValue[][]>([
@@ -17,7 +13,7 @@ const App = () => {
         [0, 0, 0],
     ]);
     const [winningMove, setWinningMove] = useState<Move>();
-    const [playerMark, setplayerMark] = useState(1);
+    const [playerMark, setPlayerMark] = useState<GameValue>(1);
     const [winner, setWinner] = useState<GameValue>();
     const [gameMode, setGameMode] = useState<GameMode>();
     const [isRoundOver, setIsRoundOver] = useState<boolean>(false);
@@ -30,7 +26,7 @@ const App = () => {
     const userMove = (indexX: number, indexY: number) => {
         const newBoard = [...board];
         if (newBoard[indexX][indexY] === 0) {
-            newBoard[indexX][indexY] = 1;
+            newBoard[indexX][indexY] = playerMark;
             setBoard(newBoard);
             const hasWinner = checkMoves();
             if (!hasWinner) computerMove();
@@ -42,7 +38,7 @@ const App = () => {
         const indexY = Math.floor(Math.random() * 3);
         const newBoard = [...board];
         if (newBoard[indexX][indexY] === 0) {
-            newBoard[indexX][indexY] = 2;
+            newBoard[indexX][indexY] = playerMark === 1 ? 2 : 1;
         } else if (newBoard.some((row) => row.some((col) => col === 0))) {
             computerMove();
         } else {
@@ -100,16 +96,17 @@ const App = () => {
         ];
 
         winningMoves.forEach((move) => {
-            if (move.every((num) => board[num[0]][num[1]] === 1)) {
+            const computerMark = playerMark === 1 ? 2 : 1;
+            if (move.every((num) => board[num[0]][num[1]] === playerMark)) {
                 setWinningMove(move);
-                setWinner(1);
-                setScoreBoard({ ...scoreBoard, 1: scoreBoard[1] + 1 });
+                setWinner(playerMark);
+                setScoreBoard({ ...scoreBoard, [playerMark]: scoreBoard[playerMark] + 1 });
                 hasWinner = true;
             }
-            if (move.every((num) => board[num[0]][num[1]] === 2)) {
+            if (move.every((num) => board[num[0]][num[1]] === computerMark)) {
                 setWinningMove(move);
-                setWinner(2);
-                setScoreBoard({ ...scoreBoard, 2: scoreBoard[2] + 1 });
+                setWinner(computerMark);
+                setScoreBoard({ ...scoreBoard, [computerMark]: scoreBoard[computerMark] + 1 });
                 hasWinner = true;
             }
         });
@@ -131,44 +128,17 @@ const App = () => {
     return (
         <div className="bg-black-600 h-screen w-screen">
             <div className="w-full h-full grid place-items-center">
-                {!gameMode ? (
-                    <div className="grid grid-col-1 place-items-center gap-10 w-1/3">
-                        <div className="flex gap-1">
-                            <BiX className="text-cyan-500" viewBox="0 0 20 20" size={40} strokeWidth={2} />
-                            <BiRadioCircle viewBox="0 0 20 20" className="text-pink-500" size={40} strokeWidth={2} />
-                        </div>
-                        <div className="bg-black-500 rounded-lg shadow-solid-black text-gray-400 uppercase grid grid-cols-1 w-full p-5 place-items-center gap-3">
-                            <div className="font-bold text-lg p-5">Pick Player 1's Mark</div>
-                            <div className="bg-black-600 w-full rounded-lg flex justify-between">
-                                <div
-                                    className={classNames(
-                                        'flex border-8 border-black-600 rounded-xl justify-center w-1/2 cursor-pointer hover:bg-cyan-500 transition-all duration-500',
-                                        { 'text-gray-400 hover:text-black-600': playerMark !== 1 },
-                                        { 'bg-gray-400 text-black-600': playerMark === 1 },
-                                    )}
-                                    onClick={() => setplayerMark(1)}>
-                                    <BiX size={40} strokeWidth={2} />
-                                </div>
-                                <div
-                                    className={classNames(
-                                        'flex border-8 border-black-600 rounded-xl justify-center w-1/2 cursor-pointer hover:bg-pink-500 transition-all duration-500',
-                                        { 'text-gray-400 hover:text-black-600': playerMark === 1 },
-                                        { 'bg-gray-400 text-black-600': playerMark !== 1 },
-                                    )}
-                                    onClick={() => setplayerMark(2)}>
-                                    <BiRadioCircle size={40} strokeWidth={2} />
-                                </div>
-                            </div>
-                            <div className="text-sm opacity-60 p-5">Remember: X Goes first</div>
-                        </div>
-                        <Button styling="inverse-secondary" extraClasses="w-full p-3" onClick={() => setGameMode(GameMode.CPU_EASY)}>
-                            New Game (vs CPU)
-                        </Button>
-                    </div>
-                ) : (
+                <GameSetup
+                    isVisible={!gameMode}
+                    playerMark={playerMark}
+                    onPlayerMarkSelect={(playerMark: GameValue) => setPlayerMark(playerMark)}
+                    onGameModeSelect={(gameMode: GameMode) => setGameMode(gameMode)}
+                />
+                {!!gameMode && (
                     <>
                         <RoundResultsModal
                             winner={winner}
+                            playerMark={playerMark}
                             isRoundOver={isRoundOver}
                             onClickQuit={() => setIsRoundOver(false)}
                             onClickNextRound={() => {
