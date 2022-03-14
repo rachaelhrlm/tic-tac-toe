@@ -33,7 +33,7 @@ export const RoundResultsModal: FunctionComponent<RoundResultsModalProps> = ({ i
         <>
             <aside
                 className={classNames(
-                    'absolute h-screen w-screen bg-black-700 transition-all duration-1000 ease-in-out',
+                    'absolute h-screen w-screen bg-black-700 transition-all duration-1000 ease-in-out z-10',
                     { 'opacity-0 pointer-events-none': !isRoundOver },
                     {
                         'opacity-80 pointer-events-auto': isRoundOver,
@@ -41,7 +41,7 @@ export const RoundResultsModal: FunctionComponent<RoundResultsModalProps> = ({ i
                 )}></aside>
             <div
                 className={classNames(
-                    'absolute w-screen h-screen grid grid-cols-1 justify-center content-center transition-all duration-700 ease-in-out',
+                    'absolute w-screen h-screen grid grid-cols-1 justify-center content-center transition-all duration-700 ease-in-out z-20',
                     { 'opacity-0 pointer-events-none': !isRoundOver },
                     {
                         'opacity-100 pointer-events-auto': isRoundOver,
