@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, { useState } from 'react';
 import { BiX, BiRadioCircle } from 'react-icons/bi';
 import { MdOutlineRefresh } from 'react-icons/md';
@@ -5,6 +6,9 @@ import { MdOutlineRefresh } from 'react-icons/md';
 import { Button, GameButton, GameValue, RoundResultsModal } from './components';
 
 type Move = number[][];
+enum GameMode {
+    CPU_EASY = 'CPU_EASY',
+}
 
 const App = () => {
     const [board, setBoard] = useState<GameValue[][]>([
@@ -13,7 +17,9 @@ const App = () => {
         [0, 0, 0],
     ]);
     const [winningMove, setWinningMove] = useState<Move>();
+    const [playerMark, setplayerMark] = useState(1);
     const [winner, setWinner] = useState<GameValue>();
+    const [gameMode, setGameMode] = useState<GameMode>();
     const [isRoundOver, setIsRoundOver] = useState<boolean>(false);
     const [scoreBoard, setScoreBoard] = useState<{
         0: number;
@@ -123,60 +129,97 @@ const App = () => {
     };
 
     return (
-        <>
-            <RoundResultsModal
-                winner={winner}
-                isRoundOver={isRoundOver}
-                onClickQuit={() => setIsRoundOver(false)}
-                onClickNextRound={() => {
-                    setIsRoundOver(false);
-                    clearBoard();
-                }}
-            />
-            <div className="bg-black-600 h-screen w-screen">
-                <div className="w-full h-full grid place-items-center">
-                    <div className="grid grid-cols-3 gap-6">
+        <div className="bg-black-600 h-screen w-screen">
+            <div className="w-full h-full grid place-items-center">
+                {!gameMode ? (
+                    <div className="grid grid-col-1 place-items-center gap-10 w-1/3">
                         <div className="flex gap-1">
                             <BiX className="text-cyan-500" viewBox="0 0 20 20" size={40} strokeWidth={2} />
                             <BiRadioCircle viewBox="0 0 20 20" className="text-pink-500" size={40} strokeWidth={2} />
                         </div>
-                        <Button styling="tertiary">
-                            <span className="flex place-items-center">
-                                <BiX size={30} strokeWidth={2} /> Turn
-                            </span>
-                        </Button>
-                        <div className="flex justify-end">
-                            <Button onClick={() => clearBoard()} styling="inverse-tertiary">
-                                <MdOutlineRefresh size={40} />
-                            </Button>
+                        <div className="bg-black-500 rounded-lg shadow-solid-black text-gray-400 uppercase grid grid-cols-1 w-full p-5 place-items-center gap-3">
+                            <div className="font-bold text-lg p-5">Pick Player 1's Mark</div>
+                            <div className="bg-black-600 w-full rounded-lg flex justify-between">
+                                <div
+                                    className={classNames(
+                                        'flex border-8 border-black-600 rounded-xl justify-center w-1/2 cursor-pointer hover:bg-cyan-500 transition-all duration-500',
+                                        { 'text-gray-400 hover:text-black-600': playerMark !== 1 },
+                                        { 'bg-gray-400 text-black-600': playerMark === 1 },
+                                    )}
+                                    onClick={() => setplayerMark(1)}>
+                                    <BiX size={40} strokeWidth={2} />
+                                </div>
+                                <div
+                                    className={classNames(
+                                        'flex border-8 border-black-600 rounded-xl justify-center w-1/2 cursor-pointer hover:bg-pink-500 transition-all duration-500',
+                                        { 'text-gray-400 hover:text-black-600': playerMark === 1 },
+                                        { 'bg-gray-400 text-black-600': playerMark !== 1 },
+                                    )}
+                                    onClick={() => setplayerMark(2)}>
+                                    <BiRadioCircle size={40} strokeWidth={2} />
+                                </div>
+                            </div>
+                            <div className="text-sm opacity-60 p-5">Remember: X Goes first</div>
                         </div>
-                        {board.map((row, indexX) => {
-                            return row.map((col, indexY) => (
-                                <GameButton
-                                    isInWinningMove={!!winningMove?.map((move) => move.toString()).includes([indexX, indexY].toString())}
-                                    onClick={() => {
-                                        if (!winner) userMove(indexX, indexY);
-                                    }}
-                                    value={col}
-                                />
-                            ));
-                        })}
-                        <Button styling="inverse-primary">
-                            <p>X</p>
-                            <p className="text-xl">{scoreBoard[1]}</p>
-                        </Button>
-                        <Button styling="inverse-tertiary">
-                            <p>Ties</p>
-                            <p className="text-xl">{scoreBoard[0]}</p>
-                        </Button>
-                        <Button styling="inverse-secondary">
-                            <p>O</p>
-                            <p className="text-xl">{scoreBoard[2]}</p>
+                        <Button styling="inverse-secondary" extraClasses="w-full p-3" onClick={() => setGameMode(GameMode.CPU_EASY)}>
+                            New Game (vs CPU)
                         </Button>
                     </div>
-                </div>
+                ) : (
+                    <>
+                        <RoundResultsModal
+                            winner={winner}
+                            isRoundOver={isRoundOver}
+                            onClickQuit={() => setIsRoundOver(false)}
+                            onClickNextRound={() => {
+                                setIsRoundOver(false);
+                                clearBoard();
+                            }}
+                        />
+
+                        <div className="grid grid-cols-3 gap-6">
+                            <div className="flex gap-1">
+                                <BiX className="text-cyan-500" viewBox="0 0 20 20" size={40} strokeWidth={2} />
+                                <BiRadioCircle viewBox="0 0 20 20" className="text-pink-500" size={40} strokeWidth={2} />
+                            </div>
+                            <Button styling="tertiary">
+                                <span className="flex place-items-center">
+                                    <BiX size={30} strokeWidth={2} /> Turn
+                                </span>
+                            </Button>
+                            <div className="flex justify-end">
+                                <Button onClick={() => clearBoard()} styling="inverse-tertiary">
+                                    <MdOutlineRefresh size={40} />
+                                </Button>
+                            </div>
+                            {board.map((row, indexX) => {
+                                return row.map((col, indexY) => (
+                                    <GameButton
+                                        isInWinningMove={!!winningMove?.map((move) => move.toString()).includes([indexX, indexY].toString())}
+                                        onClick={() => {
+                                            if (!winner) userMove(indexX, indexY);
+                                        }}
+                                        value={col}
+                                    />
+                                ));
+                            })}
+                            <Button styling="inverse-primary">
+                                <p>X</p>
+                                <p className="text-xl">{scoreBoard[1]}</p>
+                            </Button>
+                            <Button styling="inverse-tertiary">
+                                <p>Ties</p>
+                                <p className="text-xl">{scoreBoard[0]}</p>
+                            </Button>
+                            <Button styling="inverse-secondary">
+                                <p>O</p>
+                                <p className="text-xl">{scoreBoard[2]}</p>
+                            </Button>
+                        </div>
+                    </>
+                )}
             </div>
-        </>
+        </div>
     );
 };
 
