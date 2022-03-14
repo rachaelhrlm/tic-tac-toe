@@ -2,14 +2,13 @@ import classNames from 'classnames';
 import React, { FunctionComponent } from 'react';
 import { BiX, BiRadioCircle } from 'react-icons/bi';
 import { Button } from '..';
-import { GameValue } from '../gameButton';
 
 export interface RoundResultsModalProps {
     isRoundOver?: boolean;
     onClickNextRound: () => void;
     onClickQuit: () => void;
-    playerMark: GameValue;
-    winner?: GameValue;
+    playerMark: number;
+    winner?: number;
 }
 
 export const RoundResultsModal: FunctionComponent<RoundResultsModalProps> = ({
@@ -19,20 +18,20 @@ export const RoundResultsModal: FunctionComponent<RoundResultsModalProps> = ({
     playerMark,
     winner,
 }) => {
-    let roundResults = <p className="text-gray-400 flex justify-center p-10">It's a tie</p>;
+    let roundResults = <span className="text-gray-400 flex justify-center p-10">It's a tie</span>;
     if (winner === 1) {
         roundResults = (
-            <p className="text-cyan-500 flex justify-center place-items-center">
+            <span className="text-cyan-500 flex justify-center place-items-center">
                 <BiX size={130} strokeWidth={2} />
                 <p>Takes the round</p>
-            </p>
+            </span>
         );
     } else if (winner === 2) {
         roundResults = (
-            <p className="text-pink-500 flex justify-center place-items-center">
+            <span className="text-pink-500 flex justify-center place-items-center">
                 <BiRadioCircle size={130} strokeWidth={2} />
                 <p>Takes the round</p>
-            </p>
+            </span>
         );
     }
 

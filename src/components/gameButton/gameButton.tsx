@@ -3,11 +3,9 @@ import React, { FunctionComponent } from 'react';
 import { BiX, BiRadioCircle } from 'react-icons/bi';
 import { Button, ButtonProps, ButtonStlye } from '..';
 
-export type GameValue = 0 | 1 | 2;
-
 export interface GameButtonProps extends ButtonProps {
     isInWinningMove?: boolean;
-    value: GameValue;
+    value: number;
 }
 
 export const GameButton: FunctionComponent<GameButtonProps> = ({ isInWinningMove, value, ...props }) => {

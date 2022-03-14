@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, { FunctionComponent } from 'react';
 import { BiX, BiRadioCircle } from 'react-icons/bi';
-import { Button, GameValue } from '..';
+import { Button } from '..';
 
 export enum GameMode {
     CPU_EASY = 'CPU_EASY',
@@ -9,8 +9,8 @@ export enum GameMode {
 
 export interface GameSetupProps {
     isVisible: boolean;
-    playerMark: GameValue;
-    onPlayerMarkSelect: (playerMark: GameValue) => void;
+    playerMark: number;
+    onPlayerMarkSelect: (playerMark: number) => void;
     onGameModeSelect: (gameMode: GameMode) => void;
 }
 

@@ -2,120 +2,78 @@ import React, { useEffect, useState } from 'react';
 import { BiX, BiRadioCircle } from 'react-icons/bi';
 import { MdOutlineRefresh } from 'react-icons/md';
 
-import { Button, GameButton, GameMode, GameSetup, GameValue, RoundResultsModal } from './components';
+import { Button, GameButton, GameMode, GameSetup, RoundResultsModal } from './components';
 
-type Move = number[][];
-
+type Move = number[];
+const initialBoard: Record<number, number> = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
 const App = () => {
-    const [board, setBoard] = useState<GameValue[][]>([
-        [0, 0, 0],
-        [0, 0, 0],
-        [0, 0, 0],
-    ]);
+    const [board, setBoard] = useState(initialBoard);
     const [winningMove, setWinningMove] = useState<Move>();
-    const [playerMark, setPlayerMark] = useState<GameValue>(1);
-    const [winner, setWinner] = useState<GameValue>();
+    const [playerMark, setPlayerMark] = useState<number>(1);
+    const [winner, setWinner] = useState<number>();
     const [gameMode, setGameMode] = useState<GameMode>();
     const [isRoundOver, setIsRoundOver] = useState<boolean>(false);
-    const [scoreBoard, setScoreBoard] = useState<{
-        0: number;
-        1: number;
-        2: number;
-    }>({ 0: 0, 1: 0, 2: 0 });
+    const [scoreBoard, setScoreBoard] = useState<Record<number, number>>({ 0: 0, 1: 0, 2: 0 });
 
-    const userMove = (indexX: number, indexY: number) => {
-        const newBoard = [...board];
-        if (newBoard[indexX][indexY] === 0) {
-            newBoard[indexX][indexY] = playerMark;
+    const userMove = (tile: number, board: Record<number, number>) => {
+        if (board[tile] === 0) {
+            const newBoard = { ...board, [tile]: playerMark };
             setBoard(newBoard);
-            const hasWinner = checkMoves();
-            if (!hasWinner) computerMove();
+            const hasWinner = checkMoves(newBoard);
+            if (!hasWinner) computerMove(newBoard);
         }
     };
 
-    const computerMove = () => {
-        const indexX = Math.floor(Math.random() * 3);
-        const indexY = Math.floor(Math.random() * 3);
-        const newBoard = [...board];
-        if (newBoard[indexX][indexY] === 0) {
-            newBoard[indexX][indexY] = playerMark === 1 ? 2 : 1;
-        } else if (newBoard.some((row) => row.some((col) => col === 0))) {
-            computerMove();
+    const computerMove = (board: Record<number, number>) => {
+        const tile = Math.floor(Math.random() * 9);
+        if (board[tile] === 0) {
+            const newBoard = { ...board, [tile]: playerMark === 1 ? 2 : 1 };
+            setBoard(newBoard);
+            checkMoves(newBoard);
+        } else if (Object.values(board).some((value) => value === 0)) {
+            computerMove(board);
         } else {
             setWinner(0);
             setScoreBoard({ ...scoreBoard, 0: scoreBoard[0] + 1 });
             setIsRoundOver(true);
         }
-        setBoard(newBoard);
-        checkMoves();
     };
 
     useEffect(() => {
-        if (playerMark === 2 && !!gameMode && winner === undefined && board.every((row) => row.every((col) => col === 0))) computerMove();
+        if (playerMark === 2 && !!gameMode && winner === undefined && Object.values(board).every((value) => value === 0)) computerMove(board);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [gameMode, playerMark, winner, board]);
 
-    const checkMoves = () => {
+    const checkMoves = (board: Record<number, number>) => {
         let hasWinner = false;
         const winningMoves = [
-            [
-                [0, 0],
-                [0, 1],
-                [0, 2],
-            ],
-            [
-                [1, 0],
-                [1, 1],
-                [1, 2],
-            ],
-            [
-                [2, 0],
-                [2, 1],
-                [2, 2],
-            ],
-            [
-                [0, 0],
-                [1, 0],
-                [2, 0],
-            ],
-            [
-                [0, 1],
-                [1, 1],
-                [2, 1],
-            ],
-            [
-                [0, 2],
-                [1, 2],
-                [2, 2],
-            ],
-            [
-                [0, 0],
-                [1, 1],
-                [2, 2],
-            ],
-            [
-                [2, 0],
-                [1, 1],
-                [0, 2],
-            ],
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6],
         ];
 
         winningMoves.forEach((move) => {
             const computerMark = playerMark === 1 ? 2 : 1;
-            if (move.every((num) => board[num[0]][num[1]] === playerMark)) {
+
+            if (move.every((tile) => board[tile] === playerMark)) {
                 setWinningMove(move);
                 setWinner(playerMark);
                 setScoreBoard({ ...scoreBoard, [playerMark]: scoreBoard[playerMark] + 1 });
                 hasWinner = true;
             }
-            if (move.every((num) => board[num[0]][num[1]] === computerMark)) {
+            if (move.every((tile) => board[tile] === computerMark)) {
                 setWinningMove(move);
                 setWinner(computerMark);
                 setScoreBoard({ ...scoreBoard, [computerMark]: scoreBoard[computerMark] + 1 });
                 hasWinner = true;
             }
         });
-        if (!hasWinner && !board.some((row) => row.some((col) => col === 0))) {
+        if (!hasWinner && !Object.values(board).some((value) => value === 0)) {
             setWinner(0);
             setScoreBoard({ ...scoreBoard, 0: scoreBoard[0] + 1 });
 
@@ -126,14 +84,9 @@ const App = () => {
     };
 
     const clearBoard = () => {
-        const newBoard: GameValue[][] = [
-            [0, 0, 0],
-            [0, 0, 0],
-            [0, 0, 0],
-        ];
         setWinner(undefined);
         setWinningMove(undefined);
-        setBoard(newBoard);
+        setBoard({ ...initialBoard });
     };
 
     return (
@@ -142,7 +95,7 @@ const App = () => {
                 <GameSetup
                     isVisible={!gameMode}
                     playerMark={playerMark}
-                    onPlayerMarkSelect={(playerMark: GameValue) => setPlayerMark(playerMark)}
+                    onPlayerMarkSelect={(playerMark: number) => setPlayerMark(playerMark)}
                     onGameModeSelect={(gameMode: GameMode) => setGameMode(gameMode)}
                 />
                 {!!gameMode && (
@@ -173,17 +126,16 @@ const App = () => {
                                     <MdOutlineRefresh size={40} />
                                 </Button>
                             </div>
-                            {board.map((row, indexX) => {
-                                return row.map((col, indexY) => (
-                                    <GameButton
-                                        isInWinningMove={!!winningMove?.map((move) => move.toString()).includes([indexX, indexY].toString())}
-                                        onClick={() => {
-                                            if (!winner) userMove(indexX, indexY);
-                                        }}
-                                        value={col}
-                                    />
-                                ));
-                            })}
+                            {Object.values(board).map((value, index) => (
+                                <GameButton
+                                    isInWinningMove={!!winningMove?.map((move) => move.toString()).includes([index].toString())}
+                                    key={index}
+                                    onClick={() => {
+                                        if (!winner) userMove(index, { ...board });
+                                    }}
+                                    value={value}
+                                />
+                            ))}
                             <Button styling="inverse-primary">
                                 <p>X</p>
                                 <p className="text-xl">{scoreBoard[1]}</p>
