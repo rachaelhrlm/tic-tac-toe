@@ -5,6 +5,7 @@ import { Button, IconDisplay } from '..';
 
 export enum GameMode {
     CPU_EASY = 'CPU_EASY',
+    CPU_HARD = 'CPU_HARD',
 }
 
 export interface GameSetupProps {
@@ -44,7 +45,10 @@ export const GameSetup: FunctionComponent<GameSetupProps> = ({ isVisible, player
                 <div className="text-sm opacity-60 p-5">Remember: X Goes first</div>
             </div>
             <Button styling="inverse-secondary" extraClasses="w-full p-3" onClick={() => onGameModeSelect(GameMode.CPU_EASY)}>
-                New Game (vs CPU)
+                New Game (vs Easy Mode CPU)
+            </Button>
+            <Button styling="inverse-primary" extraClasses="w-full p-3" onClick={() => onGameModeSelect(GameMode.CPU_HARD)}>
+                New Game (vs Hard Mode CPU)
             </Button>
         </div>
     );

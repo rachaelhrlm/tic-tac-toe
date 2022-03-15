@@ -38,13 +38,14 @@ export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, play
     }, [gameMode, playerMark, winner, gameBoard]);
 
     useEffect(() => {
-        if (!Object.values(gameBoard).some((value) => value === 0)) {
+        if (!Object.values(gameBoard).some((value) => value === 0) && winner === undefined) {
             setWinner(0);
             setIsRoundOver(true);
         }
-    }, [gameBoard]);
+    }, [gameBoard, winner]);
 
     const clearBoard = () => {
+        setTurn(1);
         setWinner(undefined);
         setWinningMove(undefined);
         setGameBoard({ ...initialBoard });
@@ -73,21 +74,72 @@ export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, play
     };
 
     const computerMove = (board: Record<number, number>) => {
-        const tile = Math.floor(Math.random() * 9);
+        if (gameMode === GameMode.CPU_HARD) {
+            let newBoard;
 
-        if (board[tile] === 0) {
-            const newBoard = GameService.setMark(board, tile, otherPlayerMark);
-            setGameBoard(newBoard);
-            setTurn(playerMark);
-            const winningMove = GameService.getWinningMove(newBoard);
-            if (winningMove) {
-                onRoundOver(winningMove, otherPlayerMark);
+            let possiblePlayerMoves: Move[] = [];
+            let possibleComputerMoves: Move[] = [];
+
+            GameService.winningMoves.forEach(
+                (move) => move.filter((tile) => board[tile] === playerMark).length > 1 && possiblePlayerMoves.push(move),
+            );
+
+            possiblePlayerMoves.forEach((move) =>
+                move.forEach((tile) => {
+                    if (board[tile] === 0) {
+                        newBoard = GameService.setMark(board, tile, otherPlayerMark);
+                    }
+                }),
+            );
+
+            if (!newBoard) {
+                GameService.winningMoves.forEach(
+                    (move) => move.filter((tile) => board[tile] === otherPlayerMark).length > 1 && possibleComputerMoves.push(move),
+                );
+
+                possibleComputerMoves.forEach((move) =>
+                    move.forEach((tile) => {
+                        if (board[tile] === 0) {
+                            newBoard = GameService.setMark(board, tile, otherPlayerMark);
+                        }
+                    }),
+                );
+
+                if (!possibleComputerMoves.length) {
+                    let tile = Math.floor(Math.random() * 9);
+
+                    while (board[tile] !== 0) {
+                        tile = Math.floor(Math.random() * 9);
+                    }
+                    newBoard = GameService.setMark(board, tile, otherPlayerMark);
+                }
             }
-        } else if (Object.values(board).some((value) => value === 0)) {
-            computerMove(board);
+
+            if (newBoard) {
+                const winningMove = GameService.getWinningMove(newBoard);
+                if (winningMove) {
+                    onRoundOver(winningMove, otherPlayerMark);
+                }
+                setGameBoard(newBoard);
+                setTurn(playerMark);
+            }
         } else {
-            setWinner(0);
-            setIsRoundOver(true);
+            const tile = Math.floor(Math.random() * 9);
+
+            if (board[tile] === 0) {
+                const newBoard = GameService.setMark(board, tile, otherPlayerMark);
+                setGameBoard(newBoard);
+                setTurn(playerMark);
+                const winningMove = GameService.getWinningMove(newBoard);
+                if (winningMove) {
+                    onRoundOver(winningMove, otherPlayerMark);
+                }
+            } else if (Object.values(board).some((value) => value === 0)) {
+                computerMove(board);
+            } else {
+                setWinner(0);
+                setIsRoundOver(true);
+            }
         }
     };
 
