@@ -6,6 +6,7 @@ import { Button, GameButton, GameMode, GameSetup, RoundResultsModal } from './co
 
 type Move = number[];
 const initialBoard: Record<number, number> = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
+const initialScoreBoard: Record<number, number> = { 0: 0, 1: 0, 2: 0 };
 const App = () => {
     const [board, setBoard] = useState(initialBoard);
     const [winningMove, setWinningMove] = useState<Move>();
@@ -13,7 +14,7 @@ const App = () => {
     const [winner, setWinner] = useState<number>();
     const [gameMode, setGameMode] = useState<GameMode>();
     const [isRoundOver, setIsRoundOver] = useState<boolean>(false);
-    const [scoreBoard, setScoreBoard] = useState<Record<number, number>>({ 0: 0, 1: 0, 2: 0 });
+    const [scoreBoard, setScoreBoard] = useState(initialScoreBoard);
 
     const userMove = (tile: number, board: Record<number, number>) => {
         if (board[tile] === 0) {
@@ -104,7 +105,13 @@ const App = () => {
                             winner={winner}
                             playerMark={playerMark}
                             isRoundOver={isRoundOver}
-                            onClickQuit={() => setIsRoundOver(false)}
+                            onClickQuit={() => {
+                                setIsRoundOver(false);
+                                clearBoard();
+                                setPlayerMark(1);
+                                setScoreBoard(initialScoreBoard);
+                                setGameMode(undefined);
+                            }}
                             onClickNextRound={() => {
                                 setIsRoundOver(false);
                                 clearBoard();
