@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { BiX, BiRadioCircle } from 'react-icons/bi';
 import { MdOutlineRefresh } from 'react-icons/md';
 
-import { Button, GameButton, GameMode, GameSetup, IconDisplay, RoundResultsModal } from './components';
+import { Button, GameButton, GameMode, GameSetup, IconDisplay, RoundResultsModal, ScoreBoard } from './components';
 
 type Move = number[];
 const initialBoard: Record<number, number> = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
@@ -141,18 +141,7 @@ const App = () => {
                                     value={value}
                                 />
                             ))}
-                            <Button styling="inverse-primary">
-                                <p>X</p>
-                                <p className="text-xl">{scoreBoard[1]}</p>
-                            </Button>
-                            <Button styling="inverse-tertiary">
-                                <p>Ties</p>
-                                <p className="text-xl">{scoreBoard[0]}</p>
-                            </Button>
-                            <Button styling="inverse-secondary">
-                                <p>O</p>
-                                <p className="text-xl">{scoreBoard[2]}</p>
-                            </Button>
+                            <ScoreBoard oScore={scoreBoard[2]} tieScore={scoreBoard[0]} xScore={scoreBoard[1]} />
                         </div>
                     </>
                 )}
