@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, { FunctionComponent } from 'react';
 import { BiX, BiRadioCircle } from 'react-icons/bi';
-import { Button } from '..';
+import { Button, IconDisplay } from '..';
 
 export enum GameMode {
     CPU_EASY = 'CPU_EASY',
@@ -18,10 +18,7 @@ export const GameSetup: FunctionComponent<GameSetupProps> = ({ isVisible, player
     if (!isVisible) return null;
     return (
         <div className="grid grid-col-1 place-items-center gap-10 w-1/3">
-            <div className="flex gap-1">
-                <BiX className="text-cyan-500" viewBox="0 0 20 20" size={40} strokeWidth={2} />
-                <BiRadioCircle viewBox="0 0 20 20" className="text-pink-500" size={40} strokeWidth={2} />
-            </div>
+            <IconDisplay />
             <div className="bg-black-500 rounded-lg shadow-solid-black text-gray-400 uppercase grid grid-cols-1 w-full p-5 place-items-center gap-3">
                 <div className="font-bold text-lg p-5">Pick Player 1's Mark</div>
                 <div className="bg-black-600 w-full rounded-lg flex justify-between">

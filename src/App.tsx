@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { BiX, BiRadioCircle } from 'react-icons/bi';
 import { MdOutlineRefresh } from 'react-icons/md';
 
-import { Button, GameButton, GameMode, GameSetup, RoundResultsModal } from './components';
+import { Button, GameButton, GameMode, GameSetup, IconDisplay, RoundResultsModal } from './components';
 
 type Move = number[];
 const initialBoard: Record<number, number> = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
@@ -120,10 +120,7 @@ const App = () => {
                         />
 
                         <div className="grid grid-cols-3 gap-6">
-                            <div className="flex gap-1">
-                                <BiX className="text-cyan-500" viewBox="0 0 20 20" size={40} strokeWidth={2} />
-                                <BiRadioCircle viewBox="0 0 20 20" className="text-pink-500" size={40} strokeWidth={2} />
-                            </div>
+                            <IconDisplay />
                             <Button styling="tertiary">
                                 <span className="flex place-items-center">
                                     <BiX size={30} strokeWidth={2} /> Turn
