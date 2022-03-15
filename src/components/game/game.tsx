@@ -1,5 +1,6 @@
+import classNames from 'classnames';
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { BiX } from 'react-icons/bi';
+import { BiRadioCircle, BiX } from 'react-icons/bi';
 import { MdOutlineRefresh } from 'react-icons/md';
 import { GameMode, RoundResultsModal, IconDisplay, Button, GameBoard, ScoreBoard } from '..';
 import { GameService } from '../../services';
@@ -21,6 +22,7 @@ export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, play
     const [winner, setWinner] = useState<number>();
     const [isRoundOver, setIsRoundOver] = useState<boolean>(false);
     const [scoreBoard, setScoreBoard] = useState(initialScoreBoard);
+    const [turn, setTurn] = useState<number>(1);
 
     const otherPlayerMark: number = playerMark === 1 ? 2 : 1;
 
@@ -35,6 +37,13 @@ export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, play
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [gameMode, playerMark, winner, gameBoard]);
 
+    useEffect(() => {
+        if (!Object.values(gameBoard).some((value) => value === 0)) {
+            setWinner(0);
+            setIsRoundOver(true);
+        }
+    }, [gameBoard]);
+
     const clearBoard = () => {
         setWinner(undefined);
         setWinningMove(undefined);
@@ -42,6 +51,7 @@ export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, play
     };
 
     const onRoundOver = (winningMove: number[], playerMark: number) => {
+        setTurn(1);
         setWinner(playerMark);
         setWinningMove(winningMove);
         setIsRoundOver(true);
@@ -50,11 +60,15 @@ export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, play
     const userMove = (tile: number, board: Record<number, number>) => {
         if (board[tile] === 0) {
             const newBoard = GameService.setMark(board, tile, playerMark);
+            setTurn(otherPlayerMark);
             setGameBoard(newBoard);
             const winningMove = GameService.getWinningMove(newBoard);
             if (winningMove) {
                 onRoundOver(winningMove, playerMark);
-            } else computerMove(newBoard);
+            } else
+                setTimeout(() => {
+                    computerMove(newBoard);
+                }, 2000);
         }
     };
 
@@ -64,6 +78,7 @@ export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, play
         if (board[tile] === 0) {
             const newBoard = GameService.setMark(board, tile, otherPlayerMark);
             setGameBoard(newBoard);
+            setTurn(playerMark);
             const winningMove = GameService.getWinningMove(newBoard);
             if (winningMove) {
                 onRoundOver(winningMove, otherPlayerMark);
@@ -94,27 +109,40 @@ export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, play
                 }}
                 onClose={() => setIsRoundOver(false)}
             />
-
-            <div className="grid grid-cols-3 gap-6">
-                <IconDisplay />
-                <Button styling="tertiary">
-                    <span className="flex place-items-center">
-                        <BiX size={30} strokeWidth={2} /> Turn
-                    </span>
-                </Button>
-                <div className="flex justify-end">
-                    <Button onClick={() => clearBoard()} styling="inverse-tertiary">
-                        <MdOutlineRefresh size={40} />
+            <div className="relative">
+                <div className="grid grid-cols-3 gap-6">
+                    <IconDisplay />
+                    <Button styling="tertiary">
+                        <span className="flex place-items-center">
+                            {turn === 1 ? <BiX size={30} strokeWidth={2} /> : <BiRadioCircle size={30} strokeWidth={2} />} Turn
+                        </span>
                     </Button>
+                    <div className="flex justify-end">
+                        <Button onClick={() => clearBoard()} styling="inverse-tertiary">
+                            <MdOutlineRefresh size={40} />
+                        </Button>
+                    </div>
+                    <GameBoard
+                        gameBoard={gameBoard}
+                        onTileClick={(index: number) => {
+                            if (!winner && turn === playerMark) userMove(index, { ...gameBoard });
+                        }}
+                        winningMove={winningMove}
+                    />
+                    <ScoreBoard oScore={scoreBoard[2]} tieScore={scoreBoard[0]} xScore={scoreBoard[1]} />
                 </div>
-                <GameBoard
-                    gameBoard={gameBoard}
-                    onTileClick={(index: number) => {
-                        if (!winner) userMove(index, { ...gameBoard });
-                    }}
-                    winningMove={winningMove}
-                />
-                <ScoreBoard oScore={scoreBoard[2]} tieScore={scoreBoard[0]} xScore={scoreBoard[1]} />
+                <div
+                    className={classNames(
+                        'text-gray-400 -bottom-10 absolute transition-all duration-100 uppercase w-full flex place-content-center',
+                        {
+                            'opacity-0': turn !== otherPlayerMark || winner !== undefined,
+                        },
+                        {
+                            'opacity-100': turn === otherPlayerMark && winner === undefined,
+                        },
+                    )}>
+                    Computer is thinking...
+                </div>
             </div>
         </>
     );

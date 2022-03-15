@@ -420,11 +420,32 @@ Ensure the default browser behavior of the `hidden` attribute.
 .absolute {
   position: absolute;
 }
+.relative {
+  position: relative;
+}
+.bottom-5 {
+  bottom: 1.25rem;
+}
+.bottom-0 {
+  bottom: 0px;
+}
+.top-0 {
+  top: 0px;
+}
+.bottom-10 {
+  bottom: 2.5rem;
+}
+.-bottom-10 {
+  bottom: -2.5rem;
+}
 .z-10 {
   z-index: 10;
 }
 .z-20 {
   z-index: 20;
+}
+.m-auto {
+  margin: auto;
 }
 .block {
   display: block;
@@ -473,6 +494,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .grid-cols-1 {
   grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+.place-content-center {
+  place-content: center;
 }
 .place-items-center {
   place-items: center;
@@ -652,6 +676,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .duration-700 {
   transition-duration: 700ms;
+}
+.duration-100 {
+  transition-duration: 100ms;
 }
 .ease-in-out {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
