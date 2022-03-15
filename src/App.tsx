@@ -116,6 +116,7 @@ const App = () => {
                                 setIsRoundOver(false);
                                 clearBoard();
                             }}
+                            onClose={() => setIsRoundOver(false)}
                         />
 
                         <div className="grid grid-cols-3 gap-6">

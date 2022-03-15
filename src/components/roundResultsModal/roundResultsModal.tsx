@@ -7,6 +7,7 @@ export interface RoundResultsModalProps {
     isRoundOver?: boolean;
     onClickNextRound: () => void;
     onClickQuit: () => void;
+    onClose: () => void;
     playerMark: number;
     winner?: number;
 }
@@ -15,6 +16,7 @@ export const RoundResultsModal: FunctionComponent<RoundResultsModalProps> = ({
     isRoundOver,
     onClickNextRound,
     onClickQuit,
+    onClose,
     playerMark,
     winner,
 }) => {
@@ -52,7 +54,8 @@ export const RoundResultsModal: FunctionComponent<RoundResultsModalProps> = ({
                     {
                         'opacity-100 pointer-events-auto': isRoundOver,
                     },
-                )}>
+                )}
+                onClick={onClose}>
                 <div
                     className={classNames(
                         'bg-black-600 uppercase font-bold p-20',
