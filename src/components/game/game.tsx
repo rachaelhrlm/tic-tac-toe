@@ -4,9 +4,8 @@ import { BiRadioCircle, BiX } from 'react-icons/bi';
 import { MdOutlineRefresh } from 'react-icons/md';
 import { GameMode, RoundResultsModal, IconDisplay, Button, GameBoard, ScoreBoard } from '..';
 import { GameService } from '../../services';
-import { GameBoardType } from '../../types';
+import { GameBoardType, Move } from '../../types';
 
-type Move = number[];
 const initialBoard: GameBoardType = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
 const initialScoreBoard: Record<number, number> = { 0: 0, 1: 0, 2: 0 };
 
@@ -32,7 +31,7 @@ export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, play
     }, [winner]);
 
     useEffect(() => {
-        if (playerMark === 2 && !!gameMode && winner === undefined && Object.values(gameBoard).every((value) => value === 0))
+        if (playerMark === 2 && !!gameMode && winner === undefined && Object.values(gameBoard).every((value) => value === 0) && turn === 1)
             computerMove(gameBoard);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [gameMode, playerMark, winner, gameBoard]);
@@ -76,57 +75,36 @@ export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, play
     const computerMove = (board: Record<number, number>) => {
         if (gameMode === GameMode.CPU_HARD) {
             let newBoard;
+            let movesToBlock = GameService.getMovesToBlock(board, playerMark);
+            let movesToWin = GameService.getMovesToWin(board, otherPlayerMark);
+            let randomMove = GameService.getRandomMove(board);
 
-            let possiblePlayerMoves: Move[] = [];
-            let possibleComputerMoves: Move[] = [];
+            let tileToMark: number | undefined;
 
-            GameService.winningMoves.forEach(
-                (move) => move.filter((tile) => board[tile] === playerMark).length > 1 && possiblePlayerMoves.push(move),
-            );
+            if (movesToWin !== undefined) {
+                tileToMark = movesToWin;
+            } else if (movesToBlock !== undefined) {
+                tileToMark = movesToBlock;
+            } else {
+                tileToMark = randomMove;
+            }
 
-            possiblePlayerMoves.forEach((move) =>
-                move.forEach((tile) => {
-                    if (board[tile] === 0) {
-                        newBoard = GameService.setMark(board, tile, otherPlayerMark);
-                    }
-                }),
-            );
-
-            if (!newBoard) {
-                GameService.winningMoves.forEach(
-                    (move) => move.filter((tile) => board[tile] === otherPlayerMark).length > 1 && possibleComputerMoves.push(move),
-                );
-
-                possibleComputerMoves.forEach((move) =>
-                    move.forEach((tile) => {
-                        if (board[tile] === 0) {
-                            newBoard = GameService.setMark(board, tile, otherPlayerMark);
-                        }
-                    }),
-                );
-
-                if (!possibleComputerMoves.length) {
-                    let tile = Math.floor(Math.random() * 9);
-
-                    while (board[tile] !== 0) {
-                        tile = Math.floor(Math.random() * 9);
-                    }
-                    newBoard = GameService.setMark(board, tile, otherPlayerMark);
-                }
+            if (tileToMark !== undefined) {
+                newBoard = GameService.setMark(board, tileToMark, otherPlayerMark);
             }
 
             if (newBoard) {
+                setGameBoard(newBoard);
+                setTurn(playerMark);
                 const winningMove = GameService.getWinningMove(newBoard);
                 if (winningMove) {
                     onRoundOver(winningMove, otherPlayerMark);
                 }
-                setGameBoard(newBoard);
-                setTurn(playerMark);
             }
         } else {
-            const tile = Math.floor(Math.random() * 9);
+            const tile = GameService.getRandomMove(board);
 
-            if (board[tile] === 0) {
+            if (tile) {
                 const newBoard = GameService.setMark(board, tile, otherPlayerMark);
                 setGameBoard(newBoard);
                 setTurn(playerMark);
@@ -134,8 +112,6 @@ export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, play
                 if (winningMove) {
                     onRoundOver(winningMove, otherPlayerMark);
                 }
-            } else if (Object.values(board).some((value) => value === 0)) {
-                computerMove(board);
             } else {
                 setWinner(0);
                 setIsRoundOver(true);

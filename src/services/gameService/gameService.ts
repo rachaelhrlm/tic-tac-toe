@@ -1,4 +1,4 @@
-import { GameBoardType } from '../../types';
+import { GameBoardType, Move } from '../../types';
 
 const winningMoves = [
     [0, 1, 2],
@@ -10,6 +10,60 @@ const winningMoves = [
     [0, 4, 8],
     [2, 4, 6],
 ];
+
+const getMovesToBlock = (board: GameBoardType, playerMark: number): number | undefined => {
+    let movesToBlock: Move[] = [];
+    let tileToMark;
+
+    GameService.winningMoves.forEach((move) => {
+        if (move.filter((tile) => board[tile] === playerMark).length > 1) movesToBlock.push(move);
+    });
+
+    if (movesToBlock.length && movesToBlock.some((move) => move.some((tile) => board[tile] === 0))) {
+        movesToBlock.forEach((move) => {
+            if (move.some((tile) => board[tile] === 0))
+                move.forEach((tile) => {
+                    if (board[tile] === 0) tileToMark = tile;
+                });
+        });
+    }
+
+    return tileToMark;
+};
+
+const getMovesToWin = (board: GameBoardType, computerMark: number) => {
+    let movesToWin: Move[] = [];
+    let tileToMark;
+
+    GameService.winningMoves.forEach((move) => {
+        if (move.filter((tile) => board[tile] === computerMark).length > 1) movesToWin.push(move);
+    });
+
+    if (movesToWin.length && movesToWin.some((move) => move.some((tile) => board[tile] === 0))) {
+        movesToWin.forEach((move) => {
+            if (move.some((tile) => board[tile] === 0))
+                move.forEach((tile) => {
+                    if (board[tile] === 0) tileToMark = tile;
+                });
+        });
+    }
+
+    return tileToMark;
+};
+
+const getRandomMove = (board: GameBoardType) => {
+    if (Object.values(board).some((tile) => tile === 0)) {
+        const emptyTiles: number[] = Object.entries(board)
+            .filter(([key, value]) => value === 0)
+            .map(([key]) => Number(key));
+        const numberOfTiles: number = emptyTiles.length;
+
+        let tile = Math.floor(Math.random() * numberOfTiles);
+
+        if (emptyTiles) return emptyTiles[tile];
+    }
+    return undefined;
+};
 
 const getWinningMove = (gameBoard: GameBoardType): number[] | undefined => {
     let winningMove;
@@ -25,6 +79,9 @@ const setMark = (gameBoard: GameBoardType, tile: number, playerMark: number): Ga
 };
 
 export const GameService = {
+    getMovesToBlock,
+    getMovesToWin,
+    getRandomMove,
     getWinningMove,
     setMark,
     winningMoves,
