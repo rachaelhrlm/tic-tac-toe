@@ -102,10 +102,10 @@ export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, play
                 }
             }
         } else {
-            const tile = GameService.getRandomMove(board);
+            const tileToMark = GameService.getRandomMove(board);
 
-            if (tile) {
-                const newBoard = GameService.setMark(board, tile, otherPlayerMark);
+            if (tileToMark !== undefined) {
+                const newBoard = GameService.setMark(board, tileToMark, otherPlayerMark);
                 setGameBoard(newBoard);
                 setTurn(playerMark);
                 const winningMove = GameService.getWinningMove(newBoard);
