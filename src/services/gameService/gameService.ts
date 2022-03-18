@@ -55,6 +55,7 @@ const getSmartRandomMove = (board: GameBoardType, computerMark: number) => {
     const playerMark = computerMark === 1 ? 2 : 1;
     let possibleMoves: Move[] = [];
     let possibleTiles: number[] = [];
+    let possibleCornerMoves: number[] = [];
 
     GameService.winningMoves.forEach((move) => {
         if (move.filter((tile) => board[tile] === computerMark && move.every((tile) => board[tile] !== playerMark)).length >= 1)
@@ -64,9 +65,12 @@ const getSmartRandomMove = (board: GameBoardType, computerMark: number) => {
     possibleMoves.forEach((move) => {
         if (move.some((tile) => board[tile] === 0))
             move.forEach((tile) => {
+                if (board[tile] === 0 && [4, 0, 2, 8, 6].includes(tile)) possibleCornerMoves.push(tile);
                 if (board[tile] === 0) possibleTiles.push(tile);
             });
     });
+
+    if (possibleCornerMoves.length) return possibleCornerMoves[0];
     if (possibleTiles.length) return possibleTiles[0];
 
     const alternatePreferredMoves = [4, 0, 2, 8, 6].filter((tile) => board[tile] === 0);
