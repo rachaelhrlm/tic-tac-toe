@@ -51,6 +51,30 @@ const getMovesToWin = (board: GameBoardType, computerMark: number) => {
     return tileToMark;
 };
 
+const getSmartRandomMove = (board: GameBoardType, computerMark: number) => {
+    const playerMark = computerMark === 1 ? 2 : 1;
+    let possibleMoves: Move[] = [];
+    let possibleTiles: number[] = [];
+
+    GameService.winningMoves.forEach((move) => {
+        if (move.filter((tile) => board[tile] === computerMark && move.every((tile) => board[tile] !== playerMark)).length >= 1)
+            possibleMoves.push(move);
+    });
+
+    possibleMoves.forEach((move) => {
+        if (move.some((tile) => board[tile] === 0))
+            move.forEach((tile) => {
+                if (board[tile] === 0) possibleTiles.push(tile);
+            });
+    });
+    if (possibleTiles.length) return possibleTiles[0];
+
+    const alternatePreferredMoves = [4, 0, 2, 8, 6].filter((tile) => board[tile] === 0);
+    if (alternatePreferredMoves.length) return alternatePreferredMoves[0];
+
+    return getRandomMove(board);
+};
+
 const getRandomMove = (board: GameBoardType) => {
     if (Object.values(board).some((tile) => tile === 0)) {
         const emptyTiles: number[] = Object.entries(board)
@@ -82,6 +106,7 @@ export const GameService = {
     getMovesToBlock,
     getMovesToWin,
     getRandomMove,
+    getSmartRandomMove,
     getWinningMove,
     setMark,
     winningMoves,
