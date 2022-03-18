@@ -22,7 +22,7 @@ export const GameSetup: FunctionComponent<GameSetupProps> = ({ isVisible, player
             <IconDisplay />
             <div className="bg-black-500 rounded-lg shadow-solid-black text-gray-400 uppercase grid grid-cols-1 w-full p-5 place-items-center gap-3">
                 <div className="font-bold text-lg p-5">Pick Player 1's Mark</div>
-                <div className="bg-black-600 w-full rounded-lg flex justify-between">
+                <div className="bg-black-600 w-full rounded-lg flex justify-between text-5xl">
                     <div
                         className={classNames(
                             'flex border-8 border-black-600 rounded-xl justify-center w-1/2 cursor-pointer hover:bg-cyan-500 transition-all duration-500',
@@ -30,7 +30,7 @@ export const GameSetup: FunctionComponent<GameSetupProps> = ({ isVisible, player
                             { 'bg-gray-400 text-black-600': playerMark === 1 },
                         )}
                         onClick={() => onPlayerMarkSelect(1)}>
-                        <BiX size={40} strokeWidth={2} />
+                        <BiX strokeWidth={2} />
                     </div>
                     <div
                         className={classNames(
@@ -39,17 +39,33 @@ export const GameSetup: FunctionComponent<GameSetupProps> = ({ isVisible, player
                             { 'bg-gray-400 text-black-600': playerMark !== 1 },
                         )}
                         onClick={() => onPlayerMarkSelect(2)}>
-                        <BiRadioCircle size={40} strokeWidth={2} />
+                        <BiRadioCircle strokeWidth={2} />
                     </div>
                 </div>
                 <div className="text-sm opacity-60 p-5">Remember: X Goes first</div>
             </div>
-            <Button styling="inverse-secondary" extraClasses="w-full p-3" onClick={() => onGameModeSelect(GameMode.CPU_EASY)}>
-                New Game (vs Easy Mode CPU)
-            </Button>
-            <Button styling="inverse-primary" extraClasses="w-full p-3" onClick={() => onGameModeSelect(GameMode.CPU_HARD)}>
-                New Game (vs Hard Mode CPU)
-            </Button>
+
+            <div className="w-full">
+                <div className="flex">
+                    <div className="bg-black-500 rounded-t-lg px-10 py-3 font-bold text-gray-400 uppercase text-lg">CPU</div>
+                </div>
+                <div className="bg-black-500 rounded-b-lg rounded-tr-lg shadow-solid-black text-gray-400 uppercase grid grid-cols-1 w-full p-5 place-items-center gap-3">
+                    <div className="bg-black-600 w-full rounded-lg flex justify-between">
+                        <Button
+                            styling="inverse-secondary"
+                            extraClasses="w-full p-3 hover:scale-100 hover:bg-gray-400 transition-colors duration-500 border-8 border-black-600 shadow-none"
+                            onClick={() => onGameModeSelect(GameMode.CPU_EASY)}>
+                            Easy Mode
+                        </Button>
+                        <Button
+                            styling="inverse-primary"
+                            extraClasses="w-full p-3 hover:scale-100 hover:bg-gray-400 transition-colors duration-500 border-8 border-black-600 shadow-none"
+                            onClick={() => onGameModeSelect(GameMode.CPU_HARD)}>
+                            Hard Mode
+                        </Button>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };

@@ -14,7 +14,7 @@ export const Button: FunctionComponent<ButtonProps> = ({ children, extraClasses,
             {...props}
             onClick={onClick}
             className={classNames(
-                'grid place-items-center rounded-xl font-bold text-sm uppercase p-1',
+                'grid place-items-center rounded-xl font-bold uppercase p-1',
                 { 'cursor-pointer hover:scale-110 transition-all': !!onClick },
                 { 'cursor-default': !onClick },
                 { 'bg-black-500 shadow-solid-black text-cyan-500': styling === 'primary' },

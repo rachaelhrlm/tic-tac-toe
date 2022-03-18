@@ -25,7 +25,7 @@
         "predeploy": "npm run build",
         "deploy": "gh-pages -d build",
         "watch:css": "TAILWIND_MODE=watch postcss public/styles/base.css -o public/styles/app.css -w",
-        "start": "concurrently \"npm run watch:css\" \"react-scripts start\"",
+        "start": "concurrently \"npm run watch:css\" \"PORT=3006 react-scripts start\"",
         "build": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject"
