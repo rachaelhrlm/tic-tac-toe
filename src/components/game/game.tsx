@@ -77,8 +77,7 @@ export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, play
             let newBoard;
             let movesToBlock = GameService.getMovesToBlock(board, playerMark);
             let movesToWin = GameService.getMovesToWin(board, otherPlayerMark);
-            let randomMove = GameService.getRandomMove(board);
-
+            let randomMove = GameService.getSmartRandomMove(board, otherPlayerMark);
             let tileToMark: number | undefined;
 
             if (movesToWin !== undefined) {
