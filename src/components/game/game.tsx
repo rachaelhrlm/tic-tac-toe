@@ -145,7 +145,7 @@ export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, play
                         </span>
                     </Button>
                     <div className="flex justify-end">
-                        <Button onClick={() => clearBoard()} styling="inverse-tertiary">
+                        <Button disabled={turn === otherPlayerMark} onClick={() => clearBoard()} styling="inverse-tertiary">
                             <MdOutlineRefresh size={40} />
                         </Button>
                     </div>
