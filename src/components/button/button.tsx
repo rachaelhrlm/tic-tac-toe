@@ -8,13 +8,14 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     styling?: ButtonStlye;
 }
 
-export const Button: FunctionComponent<ButtonProps> = ({ children, extraClasses, onClick, styling = 'primary', ...props }) => {
+export const Button: FunctionComponent<ButtonProps> = ({ children, disabled, extraClasses, onClick, styling = 'primary', ...props }) => {
     return (
         <button
             {...props}
-            onClick={onClick}
+            onClick={!disabled ? onClick : undefined}
             className={classNames(
                 'grid place-items-center rounded-xl font-bold uppercase p-1',
+                { 'cursor-not-allowed': disabled },
                 { 'cursor-pointer hover:scale-110 transition-all': !!onClick },
                 { 'cursor-default': !onClick },
                 { 'bg-black-500 shadow-solid-black text-cyan-500': styling === 'primary' },
