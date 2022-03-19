@@ -144,22 +144,30 @@ export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, play
                 }}
                 onClose={() => setIsRoundOver(false)}
             />
-            <div className="relative">
-                <div className="grid grid-cols-3 gap-6">
-                    <IconDisplay />
-                    <Button styling="tertiary">
-                        <span className="flex place-items-center">
-                            {turn === 1 ? <BiX size={30} strokeWidth={2} /> : <BiRadioCircle size={30} strokeWidth={2} />} Turn
+            <div className="relative w-11/12 sm:w-1/2 lg:w-5/12 xl:w-1/4">
+                <div className="grid grid-cols-3 gap-4 sm:gap-6 w-full place-items-center">
+                    <span className="flex justify-self-start">
+                        <IconDisplay />
+                    </span>
+                    <Button styling="tertiary" extraClasses="p-1 w-full">
+                        <span className="flex place-items-center text-sm">
+                            <p className="text-2xl m-0 flex sm:text-3xl">
+                                {turn === 1 ? <BiX strokeWidth={2} /> : <BiRadioCircle strokeWidth={2} />}
+                            </p>
+                            <p className="pr-1">Turn</p>
                         </span>
                     </Button>
-                    <div className="flex justify-end">
+                    <div className="flex w-full justify-end text-3xl">
                         <Button
-                            disabled={turn === playerMark && gameMode !== GameMode.SOLO}
+                            disabled={turn !== playerMark && gameMode !== GameMode.SOLO}
+                            extraClasses="sm:w-1/2"
                             onClick={() => clearBoard()}
                             styling="inverse-tertiary">
-                            <MdOutlineRefresh size={40} />
+                            <MdOutlineRefresh />
                         </Button>
                     </div>
+                </div>
+                <div className="grid grid-cols-3 gap-4 sm:gap-6 pt-6">
                     <GameBoard
                         gameBoard={gameBoard}
                         onTileClick={(index: number) => {
@@ -167,6 +175,8 @@ export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, play
                         }}
                         winningMove={winningMove}
                     />
+                </div>
+                <div className="grid grid-cols-3 gap-4 sm:gap-6 pt-6">
                     <ScoreBoard oScore={scoreBoard[2]} tieScore={scoreBoard[0]} xScore={scoreBoard[1]} />
                 </div>
                 <div
