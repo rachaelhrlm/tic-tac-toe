@@ -6,6 +6,7 @@ import { Button, IconDisplay } from '..';
 export enum GameMode {
     CPU_EASY = 'CPU_EASY',
     CPU_HARD = 'CPU_HARD',
+    SOLO = 'SOLO',
 }
 
 export interface GameSetupProps {
@@ -45,26 +46,16 @@ export const GameSetup: FunctionComponent<GameSetupProps> = ({ isVisible, player
                 <div className="text-sm opacity-60 p-5">Remember: X Goes first</div>
             </div>
 
-            <div className="w-full">
-                <div className="flex">
-                    <div className="bg-black-500 rounded-t-lg px-10 py-3 font-bold text-gray-400 uppercase text-lg">CPU</div>
-                </div>
-                <div className="bg-black-500 rounded-b-lg rounded-tr-lg shadow-solid-black text-gray-400 uppercase grid grid-cols-1 w-full p-5 place-items-center gap-3">
-                    <div className="bg-black-600 w-full rounded-lg flex justify-between">
-                        <Button
-                            styling="inverse-secondary"
-                            extraClasses="w-full p-3 hover:scale-100 hover:bg-gray-400 transition-colors duration-500 border-8 border-black-600 shadow-none"
-                            onClick={() => onGameModeSelect(GameMode.CPU_EASY)}>
-                            Easy Mode
-                        </Button>
-                        <Button
-                            styling="inverse-primary"
-                            extraClasses="w-full p-3 hover:scale-100 hover:bg-gray-400 transition-colors duration-500 border-8 border-black-600 shadow-none"
-                            onClick={() => onGameModeSelect(GameMode.CPU_HARD)}>
-                            Hard Mode
-                        </Button>
-                    </div>
-                </div>
+            <div className="w-full flex gap-4 text-lg">
+                <Button styling="inverse-secondary" extraClasses="w-full rounded-md" onClick={() => onGameModeSelect(GameMode.SOLO)}>
+                    Solo
+                </Button>
+                <Button styling="inverse-primary" extraClasses="w-full rounded-md" onClick={() => onGameModeSelect(GameMode.CPU_EASY)}>
+                    CPU (Easy Mode)
+                </Button>
+                <Button styling="inverse-tertiary" extraClasses="w-full rounded-md" onClick={() => onGameModeSelect(GameMode.CPU_HARD)}>
+                    CPU (Hard Mode)
+                </Button>
             </div>
         </div>
     );

@@ -14,7 +14,7 @@ export const Button: FunctionComponent<ButtonProps> = ({ children, disabled, ext
             {...props}
             onClick={!disabled ? onClick : undefined}
             className={classNames(
-                'grid place-items-center rounded-xl font-bold uppercase p-1',
+                'grid place-items-center rounded-xl font-bold uppercase p-2',
                 { 'cursor-not-allowed': disabled },
                 { 'cursor-pointer hover:scale-110 transition-all': !!onClick },
                 { 'cursor-default': !onClick },
