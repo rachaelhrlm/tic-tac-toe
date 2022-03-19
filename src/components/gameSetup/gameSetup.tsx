@@ -19,7 +19,7 @@ export interface GameSetupProps {
 export const GameSetup: FunctionComponent<GameSetupProps> = ({ isVisible, playerMark, onGameModeSelect, onPlayerMarkSelect }) => {
     if (!isVisible) return null;
     return (
-        <div className="grid grid-col-1 place-items-center gap-10 w-1/3">
+        <div className="grid grid-col-1 place-items-center gap-10 w-11/12 xl:w-1/2 2xl:w-1/3">
             <IconDisplay />
             <div className="bg-black-500 rounded-lg shadow-solid-black text-gray-400 uppercase grid grid-cols-1 w-full p-5 place-items-center gap-3">
                 <div className="font-bold text-lg p-5">Pick Player 1's Mark</div>
@@ -46,7 +46,7 @@ export const GameSetup: FunctionComponent<GameSetupProps> = ({ isVisible, player
                 <div className="text-sm opacity-60 p-5">Remember: X Goes first</div>
             </div>
 
-            <div className="w-full flex gap-4 text-lg">
+            <div className="w-full text-lg grid grid-col-1 gap-6 sm:flex sm:gap-4">
                 <Button styling="inverse-secondary" extraClasses="w-full rounded-md" onClick={() => onGameModeSelect(GameMode.SOLO)}>
                     Solo
                 </Button>
