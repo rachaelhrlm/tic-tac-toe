@@ -516,11 +516,20 @@ Ensure the default browser behavior of the `hidden` attribute.
 .gap-4 {
   gap: 1rem;
 }
+.gap-1 {
+  gap: 0.25rem;
+}
 .rounded-xl {
   border-radius: 0.75rem;
 }
 .rounded-lg {
   border-radius: 0.5rem;
+}
+.rounded-md {
+  border-radius: 0.375rem;
+}
+.rounded-sm {
+  border-radius: 0.125rem;
 }
 .rounded-t-lg {
   border-top-left-radius: 0.5rem;
@@ -585,6 +594,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .p-4 {
   padding: 1rem;
+}
+.p-2 {
+  padding: 0.5rem;
 }
 .px-10 {
   padding-left: 2.5rem;
