@@ -1,9 +1,10 @@
 import classNames from 'classnames';
 import React, { FunctionComponent } from 'react';
 import { BiX, BiRadioCircle } from 'react-icons/bi';
-import { Button } from '..';
+import { Button, GameMode } from '..';
 
 export interface RoundResultsModalProps {
+    gameMode?: GameMode;
     isRoundOver?: boolean;
     onClickNextRound: () => void;
     onClickQuit: () => void;
@@ -13,6 +14,7 @@ export interface RoundResultsModalProps {
 }
 
 export const RoundResultsModal: FunctionComponent<RoundResultsModalProps> = ({
+    gameMode,
     isRoundOver,
     onClickNextRound,
     onClickQuit,
@@ -35,6 +37,15 @@ export const RoundResultsModal: FunctionComponent<RoundResultsModalProps> = ({
                 <p>Takes the round</p>
             </span>
         );
+    }
+
+    let winningPlayer = 'No one';
+    if (gameMode === GameMode.SOLO) {
+        winner === 1 && winner === playerMark ? (winningPlayer = 'Player 1') : (winningPlayer = 'Player 2');
+    } else if (winner === playerMark) {
+        winningPlayer = 'You';
+    } else if (winner !== 0) {
+        winningPlayer = 'Computer';
     }
 
     return (
@@ -64,9 +75,7 @@ export const RoundResultsModal: FunctionComponent<RoundResultsModalProps> = ({
                             block: isRoundOver,
                         },
                     )}>
-                    <div className="text-center text-gray-400 text-lg">
-                        {winner === playerMark ? 'You' : winner !== playerMark && winner !== 0 ? 'Computer' : 'No one'} won!
-                    </div>
+                    <div className="text-center text-gray-400 text-lg">{winningPlayer} won!</div>
                     <span className="gap-2 text-6xl">{roundResults}</span>
                     <span className="flex gap-4 justify-center pb-2">
                         <Button extraClasses="p-4 text-lg" onClick={onClickQuit} styling="inverse-tertiary">

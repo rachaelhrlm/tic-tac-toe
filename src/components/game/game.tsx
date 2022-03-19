@@ -31,7 +31,13 @@ export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, play
     }, [winner]);
 
     useEffect(() => {
-        if (playerMark === 2 && !!gameMode && winner === undefined && Object.values(gameBoard).every((value) => value === 0) && turn === 1)
+        if (
+            playerMark === 2 &&
+            gameMode !== GameMode.SOLO &&
+            winner === undefined &&
+            Object.values(gameBoard).every((value) => value === 0) &&
+            turn === 1
+        )
             computerMove(gameBoard);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [gameMode, playerMark, winner, gameBoard]);
@@ -57,18 +63,19 @@ export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, play
         setIsRoundOver(true);
     };
 
-    const userMove = (tile: number, board: Record<number, number>) => {
+    const userMove = (tile: number, board: Record<number, number>, mark: number) => {
         if (board[tile] === 0) {
-            const newBoard = GameService.setMark(board, tile, playerMark);
-            setTurn(otherPlayerMark);
+            const newBoard = GameService.setMark(board, tile, mark);
+            setTurn(mark === 1 ? 2 : 1);
             setGameBoard(newBoard);
             const winningMove = GameService.getWinningMove(newBoard);
             if (winningMove) {
-                onRoundOver(winningMove, playerMark);
-            } else
+                onRoundOver(winningMove, mark);
+            } else if (gameMode !== GameMode.SOLO) {
                 setTimeout(() => {
                     computerMove(newBoard);
                 }, 2000);
+            }
         }
     };
 
@@ -121,6 +128,7 @@ export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, play
     return (
         <>
             <RoundResultsModal
+                gameMode={gameMode}
                 winner={winner}
                 playerMark={playerMark}
                 isRoundOver={isRoundOver}
@@ -145,14 +153,17 @@ export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, play
                         </span>
                     </Button>
                     <div className="flex justify-end">
-                        <Button disabled={turn === otherPlayerMark} onClick={() => clearBoard()} styling="inverse-tertiary">
+                        <Button
+                            disabled={turn === playerMark && gameMode !== GameMode.SOLO}
+                            onClick={() => clearBoard()}
+                            styling="inverse-tertiary">
                             <MdOutlineRefresh size={40} />
                         </Button>
                     </div>
                     <GameBoard
                         gameBoard={gameBoard}
                         onTileClick={(index: number) => {
-                            if (!winner && turn === playerMark) userMove(index, { ...gameBoard });
+                            if (!winner && (turn === playerMark || gameMode === GameMode.SOLO)) userMove(index, { ...gameBoard }, turn);
                         }}
                         winningMove={winningMove}
                     />
@@ -162,10 +173,10 @@ export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, play
                     className={classNames(
                         'text-gray-400 -bottom-10 absolute transition-all duration-100 uppercase w-full flex place-content-center',
                         {
-                            'opacity-0': turn !== otherPlayerMark || winner !== undefined,
+                            'opacity-0': turn !== otherPlayerMark || winner !== undefined || gameMode === GameMode.SOLO,
                         },
                         {
-                            'opacity-100': turn === otherPlayerMark && winner === undefined,
+                            'opacity-100': turn === otherPlayerMark && winner === undefined && gameMode !== GameMode.SOLO,
                         },
                     )}>
                     Computer is thinking...
