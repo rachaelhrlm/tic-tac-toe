@@ -25,6 +25,7 @@ export const GameSetup: FunctionComponent<GameSetupProps> = ({ isVisible, player
                 <div className="font-bold text-lg p-5">Pick Player 1's Mark</div>
                 <div className="bg-black-600 w-full rounded-lg flex justify-between text-5xl">
                     <button
+                        aria-label="Select X mark"
                         className={classNames(
                             'flex border-8 border-black-600 rounded-xl justify-center w-1/2 cursor-pointer hover:bg-cyan-500 transition-all duration-500',
                             { 'text-gray-400 hover:text-black-600': playerMark !== 1 },
@@ -34,6 +35,7 @@ export const GameSetup: FunctionComponent<GameSetupProps> = ({ isVisible, player
                         <BiX strokeWidth={2} />
                     </button>
                     <button
+                        aria-label="Select O mark"
                         className={classNames(
                             'flex border-8 border-black-600 rounded-xl justify-center w-1/2 cursor-pointer hover:bg-yellow-500 transition-all duration-500',
                             { 'text-gray-400 hover:text-black-600': playerMark === 1 },
