@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { BiRadioCircle, BiX } from 'react-icons/bi';
-import { MdOutlineRefresh } from 'react-icons/md';
 import { GameMode, RoundResultsModal, IconDisplay, Button, GameBoard, ScoreBoard, RestartButton } from '..';
 import { GameService } from '../../services';
 import { GameBoardType, Move } from '../../types';

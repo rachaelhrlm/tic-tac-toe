@@ -5,6 +5,7 @@ export * from './gameButton';
 export * from './gameSetup';
 export * from './iconDisplay';
 export * from './markSelect';
+export * from './modeSelect';
 export * from './restartButton';
 export * from './roundResultsModal';
 export * from './scoreBoard';
