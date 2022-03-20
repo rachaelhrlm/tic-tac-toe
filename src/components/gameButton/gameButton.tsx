@@ -30,7 +30,7 @@ export const GameButton: FunctionComponent<GameButtonProps> = ({ isInWinningMove
                 {value === 1 ? (
                     <BiX className={classNames('text-cyan-500', { ' text-black-500': isInWinningMove })} strokeWidth={2} />
                 ) : value === 2 ? (
-                    <BiRadioCircle className={classNames('text-pink-500', { ' text-black-500': isInWinningMove })} strokeWidth={2} />
+                    <BiRadioCircle className={classNames('text-yellow-500', { ' text-black-500': isInWinningMove })} strokeWidth={2} />
                 ) : (
                     ''
                 )}

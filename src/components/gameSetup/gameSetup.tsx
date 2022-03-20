@@ -35,7 +35,7 @@ export const GameSetup: FunctionComponent<GameSetupProps> = ({ isVisible, player
                     </button>
                     <button
                         className={classNames(
-                            'flex border-8 border-black-600 rounded-xl justify-center w-1/2 cursor-pointer hover:bg-pink-500 transition-all duration-500',
+                            'flex border-8 border-black-600 rounded-xl justify-center w-1/2 cursor-pointer hover:bg-yellow-500 transition-all duration-500',
                             { 'text-gray-400 hover:text-black-600': playerMark === 1 },
                             { 'bg-gray-400 text-black-600': playerMark !== 1 },
                         )}

@@ -34,7 +34,7 @@ export const RoundResultsModal: FunctionComponent<RoundResultsModalProps> = ({
         );
     } else if (winner === 2) {
         roundResults = (
-            <span className="text-pink-500 flex justify-center place-items-center">
+            <span className="text-yellow-500 flex justify-center place-items-center">
                 <p className="text-9xl sm:text-7xl md:text-6xl lg:text-9xl">
                     <BiRadioCircle strokeWidth={2} />
                 </p>
