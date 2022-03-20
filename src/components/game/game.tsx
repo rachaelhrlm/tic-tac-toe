@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { BiRadioCircle, BiX } from 'react-icons/bi';
 import { MdOutlineRefresh } from 'react-icons/md';
-import { GameMode, RoundResultsModal, IconDisplay, Button, GameBoard, ScoreBoard } from '..';
+import { GameMode, RoundResultsModal, IconDisplay, Button, GameBoard, ScoreBoard, RestartButton } from '..';
 import { GameService } from '../../services';
 import { GameBoardType, Move } from '../../types';
 
@@ -158,14 +158,7 @@ export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, play
                         </span>
                     </Button>
                     <div className="flex w-full justify-end text-3xl">
-                        <Button
-                            aria-label="Restart round"
-                            disabled={turn !== playerMark && gameMode !== GameMode.SOLO}
-                            extraClasses="sm:w-1/2"
-                            onClick={() => clearBoard()}
-                            styling="inverse-tertiary">
-                            <MdOutlineRefresh />
-                        </Button>
+                        <RestartButton isDisabled={turn !== playerMark && gameMode !== GameMode.SOLO} onClick={() => clearBoard()} />
                     </div>
                 </div>
                 <div className="grid grid-cols-3 gap-4 sm:gap-6 pt-6">

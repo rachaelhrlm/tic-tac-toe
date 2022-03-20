@@ -12,6 +12,7 @@ export const Button: FunctionComponent<ButtonProps> = ({ children, disabled, ext
     return (
         <button
             {...props}
+            disabled={disabled}
             onClick={!disabled ? onClick : undefined}
             className={classNames(
                 'grid place-items-center rounded-xl font-bold uppercase p-2',
