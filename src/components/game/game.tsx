@@ -159,6 +159,7 @@ export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, play
                     </Button>
                     <div className="flex w-full justify-end text-3xl">
                         <Button
+                            aria-label="Restart round"
                             disabled={turn !== playerMark && gameMode !== GameMode.SOLO}
                             extraClasses="sm:w-1/2"
                             onClick={() => clearBoard()}

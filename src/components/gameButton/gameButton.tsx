@@ -4,11 +4,12 @@ import { BiX, BiRadioCircle } from 'react-icons/bi';
 import { Button, ButtonProps, ButtonStlye } from '..';
 
 export interface GameButtonProps extends ButtonProps {
+    index: number;
     isInWinningMove?: boolean;
     value: number;
 }
 
-export const GameButton: FunctionComponent<GameButtonProps> = ({ isInWinningMove, value, ...props }) => {
+export const GameButton: FunctionComponent<GameButtonProps> = ({ index, isInWinningMove, value, ...props }) => {
     const isXWinner = isInWinningMove && value === 1;
     const isOWinner = isInWinningMove && value === 2;
 
@@ -25,6 +26,7 @@ export const GameButton: FunctionComponent<GameButtonProps> = ({ isInWinningMove
         <span className="w-full pt-[100%] relative flex place-items-center">
             <Button
                 {...props}
+                aria-label={`Select tile in ${index} position`}
                 extraClasses="h-full w-full text-6xl absolute top-0 left-0 bottom-0 right-0 md:text-7xl 2xl:text-9xl"
                 styling={buttonStyling}>
                 {value === 1 ? (

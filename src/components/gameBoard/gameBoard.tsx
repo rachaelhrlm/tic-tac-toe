@@ -13,6 +13,7 @@ export const GameBoard: FunctionComponent<GameBoardProps> = ({ gameBoard, winnin
         <>
             {Object.values(gameBoard).map((value, index) => (
                 <GameButton
+                    index={index}
                     isInWinningMove={!!winningMove?.map((move) => move.toString()).includes([index].toString())}
                     key={index}
                     onClick={() => onTileClick(index)}
