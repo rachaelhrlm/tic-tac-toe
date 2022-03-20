@@ -149,7 +149,7 @@ export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, play
                     <span className="flex justify-self-start">
                         <IconDisplay />
                     </span>
-                    <Button styling="tertiary" extraClasses="p-1 w-full">
+                    <Button styling="tertiary" extraClasses="p-1 w-full" tabIndex={-1}>
                         <span className="flex place-items-center text-sm">
                             <p className="text-2xl m-0 flex sm:text-3xl">
                                 {turn === 1 ? <BiX strokeWidth={2} /> : <BiRadioCircle strokeWidth={2} />}

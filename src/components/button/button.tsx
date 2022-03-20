@@ -1,9 +1,9 @@
 import classNames from 'classnames';
-import React, { ButtonHTMLAttributes, FunctionComponent } from 'react';
+import React, { FunctionComponent } from 'react';
 
 export type ButtonStlye = 'primary' | 'secondary' | 'tertiary' | 'inverse-primary' | 'inverse-secondary' | 'inverse-tertiary';
 
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
     extraClasses?: string;
     styling?: ButtonStlye;
 }
