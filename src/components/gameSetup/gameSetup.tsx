@@ -24,7 +24,7 @@ export const GameSetup: FunctionComponent<GameSetupProps> = ({ isVisible, player
             <div className="bg-black-500 rounded-lg shadow-solid-black text-gray-400 uppercase grid grid-cols-1 w-full p-5 place-items-center gap-3">
                 <div className="font-bold text-lg p-5">Pick Player 1's Mark</div>
                 <div className="bg-black-600 w-full rounded-lg flex justify-between text-5xl">
-                    <div
+                    <button
                         className={classNames(
                             'flex border-8 border-black-600 rounded-xl justify-center w-1/2 cursor-pointer hover:bg-cyan-500 transition-all duration-500',
                             { 'text-gray-400 hover:text-black-600': playerMark !== 1 },
@@ -32,8 +32,8 @@ export const GameSetup: FunctionComponent<GameSetupProps> = ({ isVisible, player
                         )}
                         onClick={() => onPlayerMarkSelect(1)}>
                         <BiX strokeWidth={2} />
-                    </div>
-                    <div
+                    </button>
+                    <button
                         className={classNames(
                             'flex border-8 border-black-600 rounded-xl justify-center w-1/2 cursor-pointer hover:bg-pink-500 transition-all duration-500',
                             { 'text-gray-400 hover:text-black-600': playerMark === 1 },
@@ -41,7 +41,7 @@ export const GameSetup: FunctionComponent<GameSetupProps> = ({ isVisible, player
                         )}
                         onClick={() => onPlayerMarkSelect(2)}>
                         <BiRadioCircle strokeWidth={2} />
-                    </div>
+                    </button>
                 </div>
                 <div className="text-sm opacity-60 p-5">Remember: X Goes first</div>
             </div>
