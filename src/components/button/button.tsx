@@ -6,12 +6,22 @@ export type ButtonStlye = 'primary' | 'secondary' | 'tertiary' | 'inverse-primar
 export interface ButtonProps extends React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
     extraClasses?: string;
     styling?: ButtonStlye;
+    buttonRef?: React.LegacyRef<HTMLButtonElement>;
 }
 
-export const Button: FunctionComponent<ButtonProps> = ({ children, disabled, extraClasses, onClick, styling = 'primary', ...props }) => {
+export const Button: FunctionComponent<ButtonProps> = ({
+    buttonRef,
+    children,
+    disabled,
+    extraClasses,
+    onClick,
+    styling = 'primary',
+    ...props
+}) => {
     return (
         <button
             {...props}
+            ref={buttonRef}
             disabled={disabled}
             onClick={!disabled ? onClick : undefined}
             className={classNames(
