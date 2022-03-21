@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { BiRadioCircle, BiX } from 'react-icons/bi';
-import { GameMode, RoundResultsModal, IconDisplay, Button, GameBoard, ScoreBoard, RestartButton } from '..';
+import { GameMode, RoundResultsModal, IconDisplay, GameBoard, ScoreBoard, RestartButton, TurnDisplay } from '..';
 import { GameService } from '../../services';
 import { GameBoardType, Move } from '../../types';
 
@@ -147,14 +146,7 @@ export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, play
                     <span className="flex justify-self-start">
                         <IconDisplay />
                     </span>
-                    <Button styling="tertiary" extraClasses="p-1 w-full" tabIndex={-1}>
-                        <span className="flex place-items-center text-sm">
-                            <p className="text-2xl m-0 flex sm:text-3xl">
-                                {turn === 1 ? <BiX strokeWidth={2} /> : <BiRadioCircle strokeWidth={2} />}
-                            </p>
-                            <p className="pr-1">Turn</p>
-                        </span>
-                    </Button>
+                    <TurnDisplay turn={turn} />
                     <div className="flex w-full justify-end text-3xl">
                         <RestartButton isDisabled={turn !== playerMark && gameMode !== GameMode.SOLO} onClick={() => resetBoard()} />
                     </div>
