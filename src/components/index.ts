@@ -9,3 +9,4 @@ export * from './modeSelect';
 export * from './restartButton';
 export * from './roundResultsModal';
 export * from './scoreBoard';
+export * from './turnDisplay';
