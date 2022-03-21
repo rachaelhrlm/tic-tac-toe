@@ -23,32 +23,31 @@ export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, play
     const [turn, setTurn] = useState<number>(1);
 
     const otherPlayerMark: number = playerMark === 1 ? 2 : 1;
+    const isCpuMode = gameMode !== GameMode.SOLO;
+    const isCpuFirst = playerMark === 2;
+    const hasWinner = winner !== undefined;
+    const isXTurn = turn === 1;
+    const isBoardEmpty = Object.values(gameBoard).every((value) => value === 0);
+    const hasEmptyTiles = Object.values(gameBoard).some((value) => value === 0);
 
     useEffect(() => {
-        if (winner !== undefined) setScoreBoard({ ...scoreBoard, [winner]: scoreBoard[winner] + 1 });
+        if (hasWinner) setScoreBoard({ ...scoreBoard, [winner]: scoreBoard[winner] + 1 });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [winner]);
 
     useEffect(() => {
-        if (
-            playerMark === 2 &&
-            gameMode !== GameMode.SOLO &&
-            winner === undefined &&
-            Object.values(gameBoard).every((value) => value === 0) &&
-            turn === 1
-        )
-            computerMove(gameBoard);
+        if (isCpuFirst && isCpuMode && !hasWinner && isBoardEmpty && isXTurn) computerMove(gameBoard);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [gameMode, playerMark, winner, gameBoard]);
 
     useEffect(() => {
-        if (!Object.values(gameBoard).some((value) => value === 0) && winner === undefined) {
+        if (!hasEmptyTiles && !hasWinner) {
             setWinner(0);
             setIsRoundOver(true);
         }
-    }, [gameBoard, winner]);
+    }, [hasEmptyTiles, hasWinner]);
 
-    const clearBoard = () => {
+    const resetBoard = () => {
         setTurn(1);
         setWinner(undefined);
         setWinningMove(undefined);
@@ -133,13 +132,13 @@ export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, play
                 isRoundOver={isRoundOver}
                 onClickQuit={() => {
                     setIsRoundOver(false);
-                    clearBoard();
+                    resetBoard();
                     setScoreBoard(initialScoreBoard);
                     onClickQuit();
                 }}
                 onClickNextRound={() => {
                     setIsRoundOver(false);
-                    clearBoard();
+                    resetBoard();
                 }}
                 onClose={() => setIsRoundOver(false)}
             />
@@ -157,7 +156,7 @@ export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, play
                         </span>
                     </Button>
                     <div className="flex w-full justify-end text-3xl">
-                        <RestartButton isDisabled={turn !== playerMark && gameMode !== GameMode.SOLO} onClick={() => clearBoard()} />
+                        <RestartButton isDisabled={turn !== playerMark && gameMode !== GameMode.SOLO} onClick={() => resetBoard()} />
                     </div>
                 </div>
                 <div className="grid grid-cols-3 gap-4 sm:gap-6 pt-6">
