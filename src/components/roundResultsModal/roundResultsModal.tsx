@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 import { BiX, BiRadioCircle } from 'react-icons/bi';
 import { Button, GameMode } from '..';
 
@@ -52,6 +52,14 @@ export const RoundResultsModal: FunctionComponent<RoundResultsModalProps> = ({
         winningPlayer = 'Computer';
     }
 
+    const quitButtonRef = React.useRef<HTMLButtonElement>(null);
+
+    useEffect(() => {
+        if (quitButtonRef?.current && isRoundOver) {
+            quitButtonRef.current.focus();
+        }
+    }, [isRoundOver]);
+
     return (
         <>
             <aside
@@ -82,7 +90,12 @@ export const RoundResultsModal: FunctionComponent<RoundResultsModalProps> = ({
                     <div className="text-center text-gray-400 text-lg pb-5">{winningPlayer} won!</div>
                     <span className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl">{roundResults}</span>
                     <span className="flex gap-4 justify-center pb-2 pt-5 sm:text-lg">
-                        <Button extraClasses="sm:p-4" onClick={onClickQuit} styling="inverse-tertiary">
+                        <Button
+                            buttonRef={quitButtonRef}
+                            extraClasses="sm:p-4"
+                            onClick={onClickQuit}
+                            styling="inverse-tertiary"
+                            tabIndex={isRoundOver ? 10 : -1}>
                             Quit
                         </Button>
                         <Button
