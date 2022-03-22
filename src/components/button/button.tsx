@@ -27,7 +27,7 @@ export const Button: FunctionComponent<ButtonProps> = ({
             className={classNames(
                 'grid place-items-center rounded-xl font-bold uppercase p-2',
                 { 'cursor-not-allowed': disabled },
-                { 'cursor-pointer hover:scale-110 transition-all': !!onClick },
+                { 'cursor-pointer hover:scale-110 transition-all': !!onClick && !disabled },
                 { 'cursor-default': !onClick },
                 { 'bg-black-500 shadow-solid-black text-cyan-500': styling === 'primary' },
                 { 'bg-black-500 shadow-solid-black text-yellow-500': styling === 'secondary' },
