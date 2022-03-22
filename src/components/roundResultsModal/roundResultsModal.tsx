@@ -45,7 +45,11 @@ export const RoundResultsModal: FunctionComponent<RoundResultsModalProps> = ({
 
     let winningPlayer = 'No one';
     if (gameMode === GameMode.SOLO) {
-        winner === 1 && winner === playerMark ? (winningPlayer = 'Player 1') : (winningPlayer = 'Player 2');
+        if (winner === playerMark) {
+            winningPlayer = 'Player 1';
+        } else if (winner !== 0) {
+            winningPlayer = 'Player 2';
+        }
     } else if (winner === playerMark) {
         winningPlayer = 'You';
     } else if (winner !== 0) {
