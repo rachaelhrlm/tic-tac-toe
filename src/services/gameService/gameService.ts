@@ -1,5 +1,7 @@
 import { GameBoardType, Move } from '../../types';
 
+const initialBoard: GameBoardType = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
+const initialScoreBoard: Record<number, number> = { 0: 0, 1: 0, 2: 0 };
 const cornerAndCenterTiles = [4, 0, 2, 8, 6];
 const winningMoves = [
     [0, 1, 2],
@@ -75,12 +77,14 @@ const getSmartRandomMove = (board: GameBoardType, computerMark: number) => {
                 if (board[tile] === 0) possibleTiles.push(tile);
             });
     });
-
-    if (possibleCornerMoves.length) return possibleCornerMoves[Math.floor(Math.random() * possibleCornerMoves.length)];
+    console.log(possibleCornerMoves, possibleTiles, possibleMoves);
+    if (possibleCornerMoves.length)
+        return possibleCornerMoves.includes(4) ? 4 : possibleCornerMoves[Math.floor(Math.random() * possibleCornerMoves.length)];
     if (possibleTiles.length) return possibleTiles[Math.floor(Math.random() * possibleTiles.length)];
 
     const alternatePreferredMoves = cornerAndCenterTiles.filter((tile) => board[tile] === 0);
-    if (alternatePreferredMoves.length) return alternatePreferredMoves[Math.floor(Math.random() * alternatePreferredMoves.length)];
+    if (alternatePreferredMoves.length)
+        return alternatePreferredMoves.includes(4) ? 4 : alternatePreferredMoves[Math.floor(Math.random() * alternatePreferredMoves.length)];
 
     return getRandomMove(board);
 };
@@ -118,6 +122,8 @@ export const GameService = {
     getRandomMove,
     getSmartRandomMove,
     getWinningMove,
+    initialBoard,
+    initialScoreBoard,
     setMark,
     winningMoves,
 };

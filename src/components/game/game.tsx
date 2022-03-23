@@ -4,9 +4,6 @@ import { GameMode, RoundResultsModal, IconDisplay, GameBoard, ScoreBoard, Restar
 import { GameService } from '../../services';
 import { GameBoardType, Move } from '../../types';
 
-const initialBoard: GameBoardType = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
-const initialScoreBoard: Record<number, number> = { 0: 0, 1: 0, 2: 0 };
-
 export interface GameProps {
     gameMode: GameMode;
     onClickQuit: () => void;
@@ -14,11 +11,11 @@ export interface GameProps {
 }
 
 export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, playerMark }) => {
-    const [gameBoard, setGameBoard] = useState(initialBoard);
+    const [gameBoard, setGameBoard] = useState(GameService.initialBoard);
     const [winningMove, setWinningMove] = useState<Move>();
     const [winner, setWinner] = useState<number>();
     const [isRoundOver, setIsRoundOver] = useState<boolean>(false);
-    const [scoreBoard, setScoreBoard] = useState(initialScoreBoard);
+    const [scoreBoard, setScoreBoard] = useState(GameService.initialScoreBoard);
     const [turn, setTurn] = useState<number>(1);
 
     const otherPlayerMark: number = playerMark === 1 ? 2 : 1;
@@ -50,7 +47,7 @@ export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, play
         setTurn(1);
         setWinner(undefined);
         setWinningMove(undefined);
-        setGameBoard({ ...initialBoard });
+        setGameBoard({ ...GameService.initialBoard });
     };
 
     const onRoundOver = (winningMove: number[], playerMark: number) => {
@@ -76,7 +73,16 @@ export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, play
         }
     };
 
-    const computerMove = (board: Record<number, number>) => {
+    const endComputerMove = (board: GameBoardType) => {
+        setGameBoard(board);
+        setTurn(playerMark);
+        const winningMove = GameService.getWinningMove(board);
+        if (winningMove) {
+            onRoundOver(winningMove, otherPlayerMark);
+        }
+    };
+
+    const computerMove = (board: GameBoardType) => {
         if (gameMode === GameMode.CPU_HARD) {
             let newBoard;
             let movesToBlock = GameService.getMovesToBlock(board, playerMark);
@@ -97,27 +103,14 @@ export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, play
             }
 
             if (newBoard) {
-                setGameBoard(newBoard);
-                setTurn(playerMark);
-                const winningMove = GameService.getWinningMove(newBoard);
-                if (winningMove) {
-                    onRoundOver(winningMove, otherPlayerMark);
-                }
+                endComputerMove(newBoard);
             }
         } else {
             const tileToMark = GameService.getRandomMove(board);
 
             if (tileToMark !== undefined) {
                 const newBoard = GameService.setMark(board, tileToMark, otherPlayerMark);
-                setGameBoard(newBoard);
-                setTurn(playerMark);
-                const winningMove = GameService.getWinningMove(newBoard);
-                if (winningMove) {
-                    onRoundOver(winningMove, otherPlayerMark);
-                }
-            } else {
-                setWinner(0);
-                setIsRoundOver(true);
+                endComputerMove(newBoard);
             }
         }
     };
@@ -132,7 +125,7 @@ export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, play
                 onClickQuit={() => {
                     setIsRoundOver(false);
                     resetBoard();
-                    setScoreBoard(initialScoreBoard);
+                    setScoreBoard(GameService.initialScoreBoard);
                     onClickQuit();
                 }}
                 onClickNextRound={() => {
