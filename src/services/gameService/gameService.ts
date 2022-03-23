@@ -1,3 +1,4 @@
+import { GameMode } from '../../components';
 import { GameBoardType, Move } from '../../types';
 
 const initialBoard: GameBoardType = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
@@ -13,6 +14,40 @@ const winningMoves = [
     [0, 4, 8],
     [2, 4, 6],
 ];
+
+const computerMove = (board: GameBoardType, gameMode: GameMode, playerMark: number, endComputerMove: (board: GameBoardType) => void) => {
+    const computerMark = playerMark === 1 ? 2 : 1;
+    if (gameMode === GameMode.CPU_HARD) {
+        let newBoard;
+        let movesToBlock = GameService.getMovesToBlock(board, playerMark);
+        let movesToWin = GameService.getMovesToWin(board, computerMark);
+        let randomMove = GameService.getSmartRandomMove(board, computerMark);
+        let tileToMark: number | undefined;
+
+        if (movesToWin !== undefined) {
+            tileToMark = movesToWin;
+        } else if (movesToBlock !== undefined) {
+            tileToMark = movesToBlock;
+        } else {
+            tileToMark = randomMove;
+        }
+
+        if (tileToMark !== undefined) {
+            newBoard = GameService.setMark(board, tileToMark, computerMark);
+        }
+
+        if (newBoard) {
+            endComputerMove(newBoard);
+        }
+    } else {
+        const tileToMark = GameService.getRandomMove(board);
+
+        if (tileToMark !== undefined) {
+            const newBoard = GameService.setMark(board, tileToMark, computerMark);
+            endComputerMove(newBoard);
+        }
+    }
+};
 
 const generateRandomNumber = (number: number) => {
     return Math.floor(Math.random() * number);
@@ -77,7 +112,7 @@ const getSmartRandomMove = (board: GameBoardType, computerMark: number) => {
                 if (board[tile] === 0) possibleTiles.push(tile);
             });
     });
-    console.log(possibleCornerMoves, possibleTiles, possibleMoves);
+
     if (possibleCornerMoves.length)
         return possibleCornerMoves.includes(4) ? 4 : possibleCornerMoves[Math.floor(Math.random() * possibleCornerMoves.length)];
     if (possibleTiles.length) return possibleTiles[Math.floor(Math.random() * possibleTiles.length)];
@@ -117,6 +152,7 @@ const setMark = (gameBoard: GameBoardType, tile: number, playerMark: number): Ga
 };
 
 export const GameService = {
+    computerMove,
     getMovesToBlock,
     getMovesToWin,
     getRandomMove,

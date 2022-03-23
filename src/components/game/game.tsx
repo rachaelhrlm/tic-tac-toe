@@ -32,7 +32,8 @@ export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, play
     }, [winner]);
 
     useEffect(() => {
-        if (isCpuFirst && isCpuMode && !hasWinner && isBoardEmpty && isXTurn) computerMove(gameBoard);
+        if (isCpuFirst && isCpuMode && !hasWinner && isBoardEmpty && isXTurn)
+            GameService.computerMove(gameBoard, gameMode, playerMark, endComputerMove);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [gameMode, playerMark, winner, gameBoard]);
 
@@ -67,7 +68,7 @@ export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, play
                 onRoundOver(winningMove, mark);
             } else if (gameMode !== GameMode.SOLO) {
                 setTimeout(() => {
-                    computerMove(newBoard);
+                    GameService.computerMove(newBoard, gameMode, playerMark, endComputerMove);
                 }, 2000);
             }
         }
@@ -79,39 +80,6 @@ export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, play
         const winningMove = GameService.getWinningMove(board);
         if (winningMove) {
             onRoundOver(winningMove, otherPlayerMark);
-        }
-    };
-
-    const computerMove = (board: GameBoardType) => {
-        if (gameMode === GameMode.CPU_HARD) {
-            let newBoard;
-            let movesToBlock = GameService.getMovesToBlock(board, playerMark);
-            let movesToWin = GameService.getMovesToWin(board, otherPlayerMark);
-            let randomMove = GameService.getSmartRandomMove(board, otherPlayerMark);
-            let tileToMark: number | undefined;
-
-            if (movesToWin !== undefined) {
-                tileToMark = movesToWin;
-            } else if (movesToBlock !== undefined) {
-                tileToMark = movesToBlock;
-            } else {
-                tileToMark = randomMove;
-            }
-
-            if (tileToMark !== undefined) {
-                newBoard = GameService.setMark(board, tileToMark, otherPlayerMark);
-            }
-
-            if (newBoard) {
-                endComputerMove(newBoard);
-            }
-        } else {
-            const tileToMark = GameService.getRandomMove(board);
-
-            if (tileToMark !== undefined) {
-                const newBoard = GameService.setMark(board, tileToMark, otherPlayerMark);
-                endComputerMove(newBoard);
-            }
         }
     };
 
