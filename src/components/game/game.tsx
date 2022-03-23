@@ -151,15 +151,13 @@ export const Game: FunctionComponent<GameProps> = ({ gameMode, onClickQuit, play
                         <RestartButton isDisabled={turn !== playerMark && gameMode !== GameMode.SOLO} onClick={() => resetBoard()} />
                     </div>
                 </div>
-                <div className="grid grid-cols-3 gap-4 sm:gap-6 pt-6">
-                    <GameBoard
-                        gameBoard={gameBoard}
-                        onTileClick={(index: number) => {
-                            if (!winner && (turn === playerMark || gameMode === GameMode.SOLO)) userMove(index, { ...gameBoard }, turn);
-                        }}
-                        winningMove={winningMove}
-                    />
-                </div>
+                <GameBoard
+                    gameBoard={gameBoard}
+                    onTileClick={(index: number) => {
+                        if (!winner && (turn === playerMark || gameMode === GameMode.SOLO)) userMove(index, { ...gameBoard }, turn);
+                    }}
+                    winningMove={winningMove}
+                />
                 <div className="grid grid-cols-3 gap-4 sm:gap-6 pt-6">
                     <ScoreBoard oScore={scoreBoard[2]} tieScore={scoreBoard[0]} xScore={scoreBoard[1]} />
                 </div>

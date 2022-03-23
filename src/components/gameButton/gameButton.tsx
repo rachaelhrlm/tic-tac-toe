@@ -27,12 +27,21 @@ export const GameButton: FunctionComponent<GameButtonProps> = ({ index, isInWinn
             <Button
                 {...props}
                 aria-label={`Select tile in ${index} position`}
+                data-testid={`tile-${index}`}
                 extraClasses="h-full w-full text-6xl absolute top-0 left-0 bottom-0 right-0 md:text-7xl 2xl:text-9xl"
                 styling={buttonStyling}>
                 {value === 1 ? (
-                    <BiX className={classNames('text-cyan-500', { ' text-black-500': isInWinningMove })} strokeWidth={2} />
+                    <BiX
+                        className={classNames('text-cyan-500', { ' text-black-500': isInWinningMove })}
+                        data-testid={`${index}-${value}`}
+                        strokeWidth={2}
+                    />
                 ) : value === 2 ? (
-                    <BiRadioCircle className={classNames('text-yellow-500', { ' text-black-500': isInWinningMove })} strokeWidth={2} />
+                    <BiRadioCircle
+                        className={classNames('text-yellow-500', { ' text-black-500': isInWinningMove })}
+                        data-testid={`${index}-${value}`}
+                        strokeWidth={2}
+                    />
                 ) : (
                     ''
                 )}
